@@ -11,3 +11,4 @@ alembic
 uvicorn
 starlette
 aiohttp
+flask-cors

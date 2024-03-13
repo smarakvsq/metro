@@ -1,4 +1,5 @@
 from flask import Flask
+from flask_cors import CORS
 from app.api import dashboard_blueprint, route_blueprint, crime_blueprint
 
 
@@ -8,6 +9,7 @@ def create_app(testing=False):
     # app.config.from_object("app.config")
 
     register_blueprints(app)
+    CORS(app)
 
     return app
 
