@@ -1,0 +1,13 @@
+Flask[async]
+flask-restful
+flask-migrate
+sqlalchemy[asyncio]
+flask-jwt-extended
+python-dotenv
+Flask-Pydantic
+asyncio
+asyncpg
+alembic
+uvicorn
+starlette
+aiohttp

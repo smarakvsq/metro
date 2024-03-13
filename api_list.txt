@@ -1,0 +1,256 @@
+API List:
+
+Landing page
+
+
+    get_details
+        var: transport_type
+        return: {
+            {
+                "call_for_service": {
+                    "total_calls": int,
+                    "previous_month": int,
+                    "previous_year": int,
+                    "previous_month_percentage": float,
+                    "previous_year_percentage": float,
+                    "comment": str
+                }
+            },
+            {
+                "crime": {
+                    "boardings": int,
+                    "crime_per_boardings": float,
+                    "current_month": int,
+                    "previous_month": int,
+                    "previous_year": int,
+                    "previous_month_percentage": float,
+                    "previous_year_percentage": float,
+                    "comment": str
+                }
+            },
+            {
+                "arrest": {
+                    "total_arrests": int,
+                    "previous_month": int,
+                    "previous_year": int,
+                    "previous_month_percentage": float,
+                    "previous_year_percentage": float,
+                    "comment": str
+                }
+            }
+        }
+		
+Crime Details Page
+
+//route filter
+	get_route
+        var: type, transport_type
+        return: [
+			route_name,
+			route_id
+		]
+		
+//crime category filter
+	get_crime_categoty
+        var: transport_type, route_name
+        return: [
+			crime_categoty_name
+		]
+		
+		
+
+	get_crime_data
+		var: route_name,transport_type,from_date,to_date,crime_type,crime_categoty_name
+		return:{
+			{
+				"bar_chart":[{
+							crime_name
+							crime_count
+							}]
+			},
+			{
+				"trend_chart":[{
+							crime_name,
+							crime_count,
+							date:?  // to be discussed
+						}]
+			}
+		}
+		
+	get_location_data_for_crime
+		var: route_name,transport_type,from_date,to_date,crime_type,crime_categoty_name
+		return:
+		{
+			"location1": {
+			"long": float,
+			"lat": float,
+			"crimes": [
+				"crime1": int,
+				"crime2": int,
+				"crime3": int,
+				]
+			},
+			
+			"location2": {
+			"long": float,
+			"lat": float,
+			"crimes": [
+				"crime1": int,
+				"crime2": int,
+				"crime3": int,
+				]
+			}
+		}
+	
+//agency wise analysis
+	get_agency_wise_data_for_crime
+		var: route_name,transport_type,from_date,to_date,crime_categoty_name
+		return:{
+			{
+				"bar_chart":[{
+							agency_name
+							crime_count
+							}]
+			},
+			{
+				"trend_chart":[{
+							agency_name,
+							crime_count,
+							date:? // to be disscussed
+						}]
+			}
+		
+		
+		
+		
+Arrest Details page
+			
+		
+	get_arrest_data
+		var: route_name,transport_type,from_date,to_date,gender
+		return:{
+			{
+				"pie_chart":[{
+							Ethenicity
+							Arrest_count
+							Arrest_percent
+							}]
+			},
+			{
+				"trend_chart":[{
+							Ethenicity,
+							Arrest_count,
+							date:? // to be discussed
+						}]
+			}
+		}
+		
+	get_location_data_for_arrest
+		var: route_name,type,transport_type,from_date,to_date,gender
+		return:
+		{
+			"location1": {
+			"long": float,
+			"lat": float,
+			"ethenicity": [
+				"ethenicity1": int,
+				"ethenicity2": int,
+				"ethenicity3": int,
+				]
+			},
+			
+			"location2": {
+			"long": float,
+			"lat": float,
+			"ethenicity": [
+				"ethenicity1": int,
+				"ethenicity2": int,
+				"ethenicity3": int,
+				]
+			}
+		}
+	
+		
+//agency wise analysis
+	get_agency_wise_data_for_arrest
+		var: route_name,type,transport_type,from_date,to_date
+		return:{
+			{
+				"bar_chart":[{
+							agency_name
+							arrest_count
+							}]
+			},
+			{
+				"trend_chart":[{
+							agency_name,
+							arrest_count,
+							date:?  //to be discussed
+						}]
+			}
+		
+Calls for services Details
+
+		
+//calls classification section
+	get_calls_data
+		var: route_name,transport_type,from_date,to_date
+		return:{
+			{
+				"bar_chart":[{
+							calls_for_service
+							calls_count
+							}]
+			},
+			{
+				"trend_chart":[{
+							calls_for_service,
+							calls_count,
+							date:? // to be discussed
+						}]
+			}
+		}
+		
+	get_location_data_calls_for_services
+		var: route_name,transport_type,from_date,to_date
+		return:
+		{
+			"location1": {
+			"long": float,
+			"lat": float,
+			"calls_for_service": [
+				"type1": int,
+				"type2": int,
+				"type3": int,
+				]
+			},
+			
+			"location2": {
+			"long": float,
+			"lat": float,
+			"calls_for_service": [
+				"type1": int,
+				"type2": int,
+				"type3": int,
+				]
+			}
+		}
+	
+		
+//agency wise analysis
+	get_agency_wise_data_calls_for_services
+		var: route_name,transport_type,from_date,to_date
+		return:{
+			{
+				"bar_chart":[{
+							agency_name
+							calls_count
+							}]
+			},
+			{
+				"trend_chart":[{
+							agency_name,
+							calls_count,
+							date:? // to be discussed
+						}]
+			}
