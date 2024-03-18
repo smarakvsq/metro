@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-from app.api.crime.util import validate_and_get_args, parse_date
+from app.util import validate_and_get_args, parse_date
 from app.api.crime.schema import CrimeDetails
 from flask_pydantic import validate
 

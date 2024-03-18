@@ -1,2 +1,2 @@
-export FLASK_APP=app/app.py
-flask run --debug
+# export FLASK_APP=app
+# flask run --debug
