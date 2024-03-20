@@ -10,10 +10,10 @@ async def home():
 
 
 @dashboard_blueprint.route("/dashboard_details")
-@validate_and_get_args("transport_type", "weighted")
+@validate_and_get_args("transport_type", "published")
 async def dashboard_details(body):
     transport_type = body.get("transport_type")
-    weighted = body.get("weighted")
+    published = body.get("published")
 
     data = {
         "call_for_service": {

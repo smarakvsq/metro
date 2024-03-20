@@ -6,14 +6,18 @@ from sqlalchemy.orm import sessionmaker
 
 conn_string = "postgresql+asyncpg://vms_user:1234@localhost:5432/metro"
 
+
 engine = create_async_engine(
-        conn_string,
-        echo=True,
-        future=True,
+    conn_string,
+    echo=True,
+    future=True,
 )
 
+
 def async_session_generator():
-    async_session = sessionmaker(autocommit=False, autoflush=False, bind=engine, class_=AsyncSession)
+    async_session = sessionmaker(
+        autocommit=False, autoflush=False, bind=engine, class_=AsyncSession
+    )
     return async_session
 
 
@@ -29,4 +33,3 @@ async def get_session():
         raise
     finally:
         await session.close()
-

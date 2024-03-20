@@ -3,7 +3,6 @@ from flask_migrate import Migrate
 from app.db import engine
 from app.api import dashboard_blueprint, route_blueprint, crime_blueprint
 from app.middleware import cors
-from app.models import Base
 
 
 def create_app(testing=False):
@@ -14,9 +13,6 @@ def create_app(testing=False):
 
     register_blueprints(app)
     app_setup(app)
-    with app.app_context():
-        print(Base.metadata.tables)
-        Base.metadata.create_all()
 
     return app
 
@@ -31,8 +27,3 @@ def register_blueprints(app):
 def app_setup(app):
     migrate = Migrate()
     migrate.init_app(app, engine)
-
-
-# if __name__ == "__main__":
-    # app = create_app()
-    # app.run(debug=True)
