@@ -1,5 +1,5 @@
 from sqlalchemy import Column, Integer, Date, String, Boolean
-from app.models import Base
+from app.db import Base
 
 
 class CrimeVetted(Base):

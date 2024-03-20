@@ -1,11 +1,12 @@
 from contextlib import asynccontextmanager
 
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker, declarative_base
 
 
 conn_string = "postgresql+asyncpg://vms_user:1234@localhost:5432/metro"
 
+Base = declarative_base()
 
 engine = create_async_engine(
     conn_string,

@@ -1,7 +1,7 @@
 from datetime import date
 from sqlalchemy import Column, Integer, Date, String, Boolean
 from sqlalchemy.ext.asyncio import AsyncSession
-from app.models import Base
+from app.db import Base
 
 
 class AdminReview(Base):

@@ -1,5 +1,5 @@
 from sqlalchemy import Column, Integer, String, Float
-from app.models import Base
+from app.db import Base
 
 
 class RidersSummary(Base):
