@@ -12,3 +12,5 @@ uvicorn
 starlette
 aiohttp
 flask-cors
+black
+asgiref

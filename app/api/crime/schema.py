@@ -1,6 +1,7 @@
 from pydantic import BaseModel
 from typing import Optional
 
+
 class CrimeDetails(BaseModel):
     route: str
     transport_type: str
