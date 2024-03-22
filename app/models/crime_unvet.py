@@ -8,7 +8,7 @@ class CrimeUnvetted(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     year_month = Column(Date)
     year = Column(Integer)
-    month = Column(Integer)
+    month = Column(String)
     fiscal_year = Column(String)
     week_no = Column(Integer)
     from_date = Column(Date)  # clarify
