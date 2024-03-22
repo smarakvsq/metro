@@ -4,6 +4,7 @@ from app.db import Base
 
 class CrimeVetted(Base):
     __tablename__ = "crime_vetted"
+    __table_args__ = {"schema": "ssle_metro"}
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     year_month = Column(Date)

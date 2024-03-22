@@ -4,6 +4,7 @@ from app.db import Base, get_session
 
 class AdminReview(Base):
     __tablename__ = "admin_review"
+    __table_args__ = {"schema": "ssle_metro"}
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     year_month = Column(Date)

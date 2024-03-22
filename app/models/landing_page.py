@@ -4,6 +4,7 @@ from app.db import Base
 
 class CallsForServiceLanding(Base):
     __tablename__ = "calls_for_service_landing"
+    __table_args__ = {"schema": "ssle_metro"}
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     transport_type = Column(String)
@@ -40,6 +41,7 @@ class CallsForServiceLanding(Base):
 
 class ArrestLanding(Base):
     __tablename__ = "arrest_landing"
+    __table_args__ = {"schema": "ssle_metro"}
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     transport_type = Column(String)
@@ -76,6 +78,7 @@ class ArrestLanding(Base):
 
 class CrimeLanding(Base):
     __tablename__ = "crime_landing"
+    __table_args__ = {"schema": "ssle_metro"}
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     transport_type = Column(String)
