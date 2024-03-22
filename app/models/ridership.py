@@ -4,6 +4,7 @@ from app.db import Base
 
 class RidersSummary(Base):
     __tablename__ = "riders_summary"
+    __table_args__ = {"schema": "ssle_metro"}
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     year = Column(Integer)

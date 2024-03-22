@@ -4,6 +4,7 @@ from app.db import Base
 
 class Location(Base):
     __tablename__ = "location"
+    __table_args__ = {"schema": "ssle_metro"}
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     transport_type = Column(String)
