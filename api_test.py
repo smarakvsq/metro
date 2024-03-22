@@ -46,7 +46,7 @@ async def main(get_url=None, post_url=None):
 
 
 if __name__ == "__main__":
-    url = "http://127.0.0.1:5000/dashboard_details?transport_type=rail&weighted=true"
+    url = "http://127.0.0.1:5000/dashboard_details?transport_type=rail&published=true"
     # url = "http://127.0.0.1:5000/routes?type=crime&transport_type=rail"
     # url = "http://127.0.0.1:5000/crime?transport_type=rail&route=route_a"
     # url = "http://127.0.0.1:5000//crime/data?transport_type=rail&route=route_a&from_date=2023-10&to_date=2023-12&crime_type=person&crime_category=major"

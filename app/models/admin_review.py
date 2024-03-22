@@ -1,7 +1,5 @@
-from datetime import date
-from sqlalchemy import Column, Integer, Date, String, Boolean
-from sqlalchemy.ext.asyncio import AsyncSession
-from app.db import Base
+from sqlalchemy import Column, Integer, Date, String, Boolean, select
+from app.db import Base, get_session
 
 
 class AdminReview(Base):
@@ -37,59 +35,13 @@ class AdminReview(Base):
             "publish": self.published,
         }
 
+    @staticmethod
+    async def get_comment(admin_id: int) -> str:
+        comment = ""
+        async with get_session() as sess:
+            ar: AdminReview = (await sess.scalars(select(AdminReview).where(AdminReview.id == admin_id))).first()
 
-async def create_admin_review(
-    session: AsyncSession,
-    year_month: date,
-    year: int,
-    month: int,
-    fiscal_year: str,
-    transport_type: str,
-    line_name: str,
-    section_heading: str,
-    comments: str,
-    preview_publish: str,
-    vetted_unvetted: str,
-) -> AdminReview:
-    admin_review = AdminReview(
-        year_month=year_month,
-        year=year,
-        month=month,
-        fiscal_year=fiscal_year,
-        transport_type=transport_type,
-        line_name=line_name,
-        section_heading=section_heading,
-        comments=comments,
-        preview_publish=preview_publish,
-        vetted_unvetted=vetted_unvetted,
-    )
-    session.add(admin_review)
-    await session.commit()
-    return admin_review
+        if ar:
+            comment = ar.comments
 
-
-# ... (read_admin_review, update_admin_review, and delete_admin_review methods remain the same) ...
-
-# async def main():
-#     engine = create_async_engine("sqlite+aiosqlite:///admin_review.db", echo=True)
-#     async with engine.begin() as conn:
-#         await conn.run_sync(Base.metadata.create_all)
-
-#     async with AsyncSession(engine) as session:
-#         new_admin_review = await create_admin_review(
-#             session,
-#             year_month=date(2023, 3, 1),
-#             year=2023,
-#             month=3,
-#             fiscal_year="2023-2024",
-#             transport_type="Air",
-#             linetype="Domestic",
-#             section_heading="Revenue",
-#             comments="No comments",
-#             preview_publish="Publish",
-#             vetted_unvetted="Vetted",
-#         )
-#         print(new_admin_review)
-#         print(new_admin_review.to_json())
-
-# asyncio.run(main())
+        return comment

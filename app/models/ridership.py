@@ -15,7 +15,7 @@ class RidersSummary(Base):
     avg_daily_riders = Column(Float)
     avg_daily_pmiles = Column(Float)
     riders_total = Column(Integer)
-    pmiles_total = Column (Integer)
+    pmiles_total = Column(Integer)
 
     def __repr__(self):
         return f"RidersSummary({self.year}, {self.month_number}, {self.day_type}, {self.line_name}, {self.provider}, {self.date_count}, {self.avg_daily_riders}, {self.avg_daily_pmiles}, {self.riders_total}, {self.pmiles_total})"

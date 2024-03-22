@@ -7,6 +7,7 @@ from sqlalchemy.ext.asyncio import async_engine_from_config
 
 from alembic import context
 import logging
+
 logging.basicConfig(level=logging.INFO)
 
 # this is the Alembic Config object, which provides
