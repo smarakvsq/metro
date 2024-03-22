@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-from app.api.crime.util import validate_and_get_args
+from app.util import validate_and_get_args
 
 route_blueprint = Blueprint("route", __name__)
 

@@ -1,0 +1,40 @@
+1. Public facing pages
+    . Landing pages
+        rail
+            crime
+                table creation
+                migration
+                script to fetch and create data and calculation (timetaking)
+                ridership table creation
+                migration
+                script to fetch and create data and calculation (timetaking)
+            call for service
+                table creation
+                migration
+                script to fetch and create data and calculation (timetaking)
+            arrest
+                table creation
+                migration
+                script to fetch and create data and calculation (timetaking)
+        bus
+            crime
+            call for service
+            arrest
+        system wide
+            crime
+            call for service
+            arrest
+    . Dashboards
+        migration
+        sample data load
+        endpoints for graphs (timetaking)
+
+2. Admin
+    post api creation
+    publish (timetaking)
+    logic to publish
+    unpublish flow
+    date filter at the top
+    authentication
+
+3. Data sync
