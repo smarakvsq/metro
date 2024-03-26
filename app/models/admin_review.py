@@ -16,9 +16,11 @@ class AdminReview(Base):
     section_heading = Column(String)
     comments = Column(String)
     published = Column(Boolean)
+    vetted = Column(Boolean)
+    page_type = Column(String)
 
     def __repr__(self):
-        return f"AdminReview({self.year_month}, {self.year}, {self.month}, {self.fiscal_year}, {self.transport_type}, {self.line_name}, {self.section_heading}, {self.comments}, {self.published}"
+        return f"AdminReview({self.year_month}, {self.year}, {self.month}, {self.fiscal_year}, {self.transport_type}, {self.line_name}, {self.section_heading}, {self.comments}, {self.published}, {self.page_type}, {self.vetted}"
 
     def __str__(self):
         return self.__repr__()
@@ -33,6 +35,8 @@ class AdminReview(Base):
             "line_name": self.line_name,
             "section_heading": self.section_heading,
             "comments": self.comments,
+            "vetted": self.vetted,
+            "page_type": self.page_type,
             "publish": self.published,
         }
 

@@ -1,2 +1,2 @@
-# export FLASK_APP=app
-# flask run --debug
+python bg_task.py &
+python manage.py
