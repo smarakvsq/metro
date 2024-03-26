@@ -1,11 +1,12 @@
 from app.db import get_session
 from app.models import CallsForServiceLanding, CrimeLanding, ArrestLanding, AdminReview
-
 from sqlalchemy import select
 
 
 async def get_call_for_service_data(transport_type: str, published: bool):
     comment = ""
+    data = None
+
     async with get_session() as sess:
         data: CallsForServiceLanding = (
             await sess.scalars(
@@ -18,16 +19,18 @@ async def get_call_for_service_data(transport_type: str, published: bool):
             )
         ).first()
 
+    call_for_service_data = {}
     if data:
         comment = await AdminReview.get_comment(admin_id=data.admin_review_id)
-
-    call_for_service_data = data.to_json()
-    call_for_service_data.update({"comment": comment})
+        call_for_service_data = data.to_json()
+        call_for_service_data.update({"comment": comment})
     return call_for_service_data
 
 
 async def get_crime_data(transport_type: str, published: bool):
     comment = ""
+    data = None
+
     async with get_session() as sess:
         data: CrimeLanding = (
             await sess.scalars(
@@ -40,16 +43,17 @@ async def get_crime_data(transport_type: str, published: bool):
             )
         ).first()
 
+    crime_data = {}
     if data:
         comment = await AdminReview.get_comment(admin_id=data.admin_review_id)
-
-    crime_data = data.to_json()
-    crime_data.update({"comment": comment})
+        crime_data = data.to_json()
+        crime_data.update({"comment": comment})
     return crime_data
 
 
 async def get_arrest_data(transport_type: str, published: bool):
     comment = ""
+    data = None
     async with get_session() as sess:
         data = (
             await sess.scalars(
@@ -61,10 +65,11 @@ async def get_arrest_data(transport_type: str, published: bool):
                 .order_by(ArrestLanding.current_year_month.desc())
             )
         ).first()
-
+    arrest_data = {}
     if data:
         comment = await AdminReview.get_comment(admin_id=data.admin_review_id)
-
-    arrest_data = data.to_json()
-    arrest_data.update({"comment": comment})
+        arrest_data = data.to_json()
+        arrest_data.update({"comment": comment})
+    
     return arrest_data
+    

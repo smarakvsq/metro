@@ -25,28 +25,20 @@ async def test_async_api(method, url, params=None, data=None, headers=None):
             except aiohttp.ContentTypeError:
                 response_data = await response.text()
 
+            print({"status_code": response.status, "response": response_data})
             return {"status_code": response.status, "response": response_data}
 
 
 async def main(get_url=None, post_url=None):
     # GET request
-    get_response = await test_async_api("GET", get_url)
-    print(get_response)
-
-    # POST request with request body and headers
-    # post_data = {'name': 'John Doe', 'email': 'john@example.com'}
-    # post_headers = {'Content-Type': 'application/json', 'Authorization': 'Bearer token123'}
-    # post_response = await test_async_api('POST', 'https://api.example.com/users', data=post_data, headers=post_headers)
-    # print(post_response)
-
-    # PUT request with URL parameters
-    # put_params = {'id': 123}
-    # put_response = await test_async_api('PUT', 'https://api.example.com/users/update', params=put_params)
-    # print(put_response)
-
+    tasks = []
+    for x in range(10): 
+        tasks.append(test_async_api("GET", get_url))
+    await asyncio.gather(*tasks, return_exceptions=True)
+    
 
 if __name__ == "__main__":
-    url = "http://127.0.0.1:5000/dashboard_details?transport_type=rail&published=true"
+    url = "http://127.0.0.1:5001/dashboard_details?transport_type=rail&published=true"
     # url = "http://127.0.0.1:5000/routes?type=crime&transport_type=rail"
     # url = "http://127.0.0.1:5000/crime?transport_type=rail&route=route_a"
     # url = "http://127.0.0.1:5000//crime/data?transport_type=rail&route=route_a&from_date=2023-10&to_date=2023-12&crime_type=person&crime_category=major"

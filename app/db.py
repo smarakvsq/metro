@@ -2,35 +2,28 @@ from contextlib import asynccontextmanager
 
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
-
+import threading
 
 conn_string = "postgresql+asyncpg://vms_user:1234@localhost:5432/metro"
 
 Base = declarative_base()
-
-engine = create_async_engine(
-    conn_string,
-    echo=True,
-    future=True,
-)
+db_connections = threading.local()
 
 
-def async_session_generator():
-    async_session = sessionmaker(
-        autocommit=False, autoflush=False, bind=engine, class_=AsyncSession
-    )
-    return async_session
+def get_sessionmaker():
+    if not hasattr(db_connections, "engine"):
+         db_connections.engine = create_async_engine(conn_string, pool_size=1000, echo = True)
+    if not hasattr(db_connections, "sessionmaker"):
+         db_connections.sessionmaker = sessionmaker(bind=db_connections.engine, autoflush=False, class_=AsyncSession)
+    return db_connections.sessionmaker
 
 
 @asynccontextmanager
 async def get_session():
     try:
-        async_session = async_session_generator()
-
-        async with async_session() as session:
+        async with get_sessionmaker()() as session:
             yield session
     except:
         await session.rollback()
-        raise
     finally:
         await session.close()
