@@ -26,6 +26,5 @@ async def dashboard_details(body):
     )
     crime = await get_crime_data(transport_type=transport_type, published=published)
 
-    # data = {"call_for_service": call_for_service}
-    data = {"call_for_service": call_for_service, "crime": crime, "arrest": arrest}
+    data = {"call_for_service": call_for_service, "crime": crime, "arrest": arrest, "last_updated_at": crime.get("current_year_month")}
     return jsonify(data), 200

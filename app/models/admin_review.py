@@ -14,13 +14,14 @@ class AdminReview(Base):
     transport_type = Column(String)
     line_name = Column(String)
     section_heading = Column(String)
+    sub_section_heading = Column(String)
     comments = Column(String)
     published = Column(Boolean)
     vetted = Column(Boolean)
     page_type = Column(String)
 
     def __repr__(self):
-        return f"AdminReview({self.year_month}, {self.year}, {self.month}, {self.fiscal_year}, {self.transport_type}, {self.line_name}, {self.section_heading}, {self.comments}, {self.published}, {self.page_type}, {self.vetted}"
+        return f"AdminReview({self.year_month}, {self.year}, {self.month}, {self.fiscal_year}, {self.transport_type}, {self.line_name}, {self.section_heading}, {self.comments}, {self.published}, {self.page_type}, {self.vetted}, {self.sub_section_heading}"
 
     def __str__(self):
         return self.__repr__()
@@ -34,6 +35,7 @@ class AdminReview(Base):
             "transport_type": self.transport_type,
             "line_name": self.line_name,
             "section_heading": self.section_heading,
+            "sub_section_heading": self.sub_section_heading,
             "comments": self.comments,
             "vetted": self.vetted,
             "page_type": self.page_type,

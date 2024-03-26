@@ -1,4 +1,5 @@
 from app.db import get_session
+from app.constants import TransportType
 from app.models import CallsForServiceLanding, CrimeLanding, ArrestLanding, AdminReview
 from sqlalchemy import select
 
@@ -10,6 +11,8 @@ async def get_call_for_service_data(transport_type: str, published: bool):
     
     if transport_type:
         conditions.append(CallsForServiceLanding.transport_type == transport_type)
+    else:
+        conditions.append(CallsForServiceLanding.transport_type == TransportType.SYSTEM_WIDE)
 
     if published:
         conditions.append(CallsForServiceLanding.published == published)
@@ -38,6 +41,8 @@ async def get_crime_data(transport_type: str, published: bool):
     
     if transport_type:
         conditions.append(CrimeLanding.transport_type == transport_type)
+    else:
+        conditions.append(CrimeLanding.transport_type == TransportType.SYSTEM_WIDE)
 
     if published:
         conditions.append(CrimeLanding.published == published)
@@ -66,6 +71,8 @@ async def get_arrest_data(transport_type: str, published: bool):
     
     if transport_type:
         conditions.append(ArrestLanding.transport_type == transport_type)
+    else:
+        conditions.append(ArrestLanding.transport_type == TransportType.SYSTEM_WIDE)
 
     if published:
         conditions.append(ArrestLanding.published == published)
