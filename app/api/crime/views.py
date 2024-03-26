@@ -8,7 +8,7 @@ crime_blueprint = Blueprint("crime", __name__)
 
 
 @crime_blueprint.route("/crime")
-@validate_and_get_args("route", "transport_type")
+@validate_and_get_args(route=True, transport_type=False)
 async def get_crime_category(params):
 
     data = ["On Person", "Property Related", "Society"]
@@ -17,14 +17,14 @@ async def get_crime_category(params):
 
 @crime_blueprint.route("/crime/data")
 @validate_and_get_args(
-    "route",
-    "transport_type",
-    "from_date",
-    "to_date",
-    "crime_type",
-    "crime_category",
-    "vetted",
-    "publish",
+    route=True,
+    transport_type=True,
+    from_date=True,
+    to_date=True,
+    crime_type=True,
+    crime_category=True,
+    vetted=True,
+    publish=True,
 )
 async def crime_data(body):
     print(body)

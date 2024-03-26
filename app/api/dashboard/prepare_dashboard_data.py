@@ -6,15 +6,19 @@ from sqlalchemy import select
 async def get_call_for_service_data(transport_type: str, published: bool):
     comment = ""
     data = None
+    conditions = []
+    
+    if transport_type:
+        conditions.append(CallsForServiceLanding.transport_type == transport_type)
+
+    if published:
+        conditions.append(CallsForServiceLanding.published == published)
 
     async with get_session() as sess:
         data: CallsForServiceLanding = (
             await sess.scalars(
                 select(CallsForServiceLanding)
-                .where(
-                    CallsForServiceLanding.transport_type == transport_type,
-                    CallsForServiceLanding.published == published,
-                )
+                .where(*conditions)
                 .order_by(CallsForServiceLanding.current_year_month.desc())
             )
         ).first()
@@ -30,15 +34,19 @@ async def get_call_for_service_data(transport_type: str, published: bool):
 async def get_crime_data(transport_type: str, published: bool):
     comment = ""
     data = None
+    conditions = []
+    
+    if transport_type:
+        conditions.append(CrimeLanding.transport_type == transport_type)
+
+    if published:
+        conditions.append(CrimeLanding.published == published)
 
     async with get_session() as sess:
         data: CrimeLanding = (
             await sess.scalars(
                 select(CrimeLanding)
-                .where(
-                    CrimeLanding.transport_type == transport_type,
-                    CrimeLanding.published == published,
-                )
+                .where(*conditions)
                 .order_by(CrimeLanding.current_year_month.desc())
             )
         ).first()
@@ -54,14 +62,19 @@ async def get_crime_data(transport_type: str, published: bool):
 async def get_arrest_data(transport_type: str, published: bool):
     comment = ""
     data = None
+    conditions = []
+    
+    if transport_type:
+        conditions.append(ArrestLanding.transport_type == transport_type)
+
+    if published:
+        conditions.append(ArrestLanding.published == published)
+
     async with get_session() as sess:
         data = (
             await sess.scalars(
                 select(ArrestLanding)
-                .where(
-                    ArrestLanding.transport_type == transport_type,
-                    ArrestLanding.published == published,
-                )
+                .where(*conditions)
                 .order_by(ArrestLanding.current_year_month.desc())
             )
         ).first()

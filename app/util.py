@@ -1,48 +1,47 @@
 from datetime import datetime
-from functools import wraps
-from flask import request
+from flask import request, jsonify
 from functools import wraps
 
 
 mapper = {"true": True, "True": True, "false": False, "False": False}
 
 
-def validate_and_get_args(*args):
+def validate_and_get_args(**kwargs):
     """
     Decorator to validate and extract arguments from a Flask request,
-    supporting async endpoints.
+    supporting async endpoints and marking arguments as optional.
 
     Args:
-        *args: A list of argument names to extract and validate, or "all" to return all request.args.
+        **kwargs: A dictionary where keys are argument names and values are booleans indicating if the argument is required (True) or optional (False).
 
     Returns:
         A decorator function.
 
     Raises:
-        ValueError: If a required argument is missing or invalid.
+        KeyError: If a required argument is missing.
     """
 
     def decorator(func):
         @wraps(func)
         async def wrapper(*f_args, **f_kwargs):
-            if "all" in args:
-                validated_args = request.args.to_dict()  # Get all request.args
-            else:
-                validated_args = {}
-                for arg in args:
-                    if request.method == "GET":
-                        value = request.args.get(arg)
-                    else:
-                        raise ValueError(f"Unsupported request method: {request.method}")
+            missing_args = []
+            validated_args = {}
+            for arg, is_required in kwargs.items():
+                if request.method == "GET":
+                    value = request.args.get(arg)
+                else:
+                    raise ValueError(f"Unsupported request method: {request.method}")
 
-                    if value is None and arg != "all":  # Don't raise error for missing "all"
-                        raise ValueError(f"Missing required argument: {arg}")
-
+                if value is None and is_required:
+                    missing_args.append(arg)
+                else:
                     # Add custom validation logic here (e.g., type checking)
-                    # validated_args[arg] = validate_value(value)  # Replace with your validation function
-                    if value.lower() in mapper.keys():
+                    if value and value.lower() in mapper.keys():
                         value = mapper[value]
                     validated_args[arg] = value
+
+            if missing_args:
+                return jsonify({"error": "Missing required arguments", "missing_args": missing_args}), 400
 
             # Call the decorated function asynchronously
             return await func(*f_args, validated_args, **f_kwargs)
