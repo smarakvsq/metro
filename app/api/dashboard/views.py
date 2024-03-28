@@ -15,7 +15,7 @@ async def home():
 
 
 @dashboard_blueprint.route("/dashboard_details")
-@validate_and_get_args("transport_type", "published")
+@validate_and_get_args(transport_type=False, published=True)
 async def dashboard_details(body):
     transport_type = body.get("transport_type")
     published = body.get("published")
@@ -26,5 +26,10 @@ async def dashboard_details(body):
     )
     crime = await get_crime_data(transport_type=transport_type, published=published)
 
-    data = {"call_for_service": call_for_service, "crime": crime, "arrest": arrest}
+    data = {
+        "call_for_service": call_for_service,
+        "crime": crime,
+        "arrest": arrest,
+        "last_updated_at": crime.get("current_year_month"),
+    }
     return jsonify(data), 200
