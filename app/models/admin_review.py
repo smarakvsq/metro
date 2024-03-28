@@ -1,8 +1,6 @@
 from sqlalchemy import Column, Integer, Date, String, Boolean, select
-from flask import jsonify
 from app.db import Base, get_session
 from app.constants import PageType, TransportType
-from app.util import get_members
 
 
 class AdminReview(Base):
@@ -94,13 +92,7 @@ class AdminReview(Base):
         if page_type:
             filters.append(AdminReview.page_type == page_type)
         else:
-            return jsonify(
-                {
-                    "Error": (
-                        f"Page Type Incorrect. Should be one of {', '.join(get_members(PageType))}"
-                    )
-                }
-            )
+            print("Page type not found")
 
         if line_name:
             filters.append(AdminReview.line_name == line_name)

@@ -75,10 +75,3 @@ async def select_crime_table(vetted: bool):
     return CrimeVetted if vetted else CrimeUnvetted
 
 
-def get_members(parent_class):
-    children = []
-    for attr_name in dir(parent_class):
-        if attr_name.isupper():
-            attr_value = getattr(parent_class, attr_name)
-            children.append(attr_value)
-    return children
