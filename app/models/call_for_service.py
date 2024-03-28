@@ -20,7 +20,11 @@ class CallForService(Base):
     published = Column(Boolean)
 
     def __repr__(self):
-        return f"CallForService({self.year_month}, {self.year}, {self.month}, {self.fiscal_year}, {self.transport_type}, {self.line_name}, {self.call_type}, {self.station_name}, {self.agency_name}, {self.calls_count}, {self.published})"
+        return (
+            f"CallForService({self.year_month}, {self.year}, {self.month}, {self.fiscal_year},"
+            f" {self.transport_type}, {self.line_name}, {self.call_type}, {self.station_name},"
+            f" {self.agency_name}, {self.calls_count}, {self.published})"
+        )
 
     def __str__(self):
         return self.__repr__()

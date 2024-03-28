@@ -8,7 +8,7 @@ async def get_call_for_service_data(transport_type: str, published: bool):
     comment = ""
     data = None
     conditions = []
-    
+
     if transport_type:
         conditions.append(CallsForServiceLanding.transport_type == transport_type)
     else:
@@ -28,7 +28,7 @@ async def get_call_for_service_data(transport_type: str, published: bool):
 
     call_for_service_data = {}
     if data:
-        comment = await AdminReview.get_comment(admin_id=data.admin_review_id)
+        comment = await AdminReview.get_comment_by_id(admin_id=data.admin_review_id)
         call_for_service_data = data.to_json()
         call_for_service_data.update({"comment": comment})
     return call_for_service_data
@@ -38,7 +38,7 @@ async def get_crime_data(transport_type: str, published: bool):
     comment = ""
     data = None
     conditions = []
-    
+
     if transport_type:
         conditions.append(CrimeLanding.transport_type == transport_type)
     else:
@@ -58,7 +58,7 @@ async def get_crime_data(transport_type: str, published: bool):
 
     crime_data = {}
     if data:
-        comment = await AdminReview.get_comment(admin_id=data.admin_review_id)
+        comment = await AdminReview.get_comment_by_id(admin_id=data.admin_review_id)
         crime_data = data.to_json()
         crime_data.update({"comment": comment})
     return crime_data
@@ -68,7 +68,7 @@ async def get_arrest_data(transport_type: str, published: bool):
     comment = ""
     data = None
     conditions = []
-    
+
     if transport_type:
         conditions.append(ArrestLanding.transport_type == transport_type)
     else:
@@ -87,9 +87,8 @@ async def get_arrest_data(transport_type: str, published: bool):
         ).first()
     arrest_data = {}
     if data:
-        comment = await AdminReview.get_comment(admin_id=data.admin_review_id)
+        comment = await AdminReview.get_comment_by_id(admin_id=data.admin_review_id)
         arrest_data = data.to_json()
         arrest_data.update({"comment": comment})
-    
+
     return arrest_data
-    

@@ -22,7 +22,12 @@ class CrimeVetted(Base):
     published = Column(Boolean, default=False)
 
     def __repr__(self):
-        return f"CrimeVetted({self.year_month}, {self.year}, {self.month}, {self.fiscal_year}, {self.transport_type}, {self.line_name}, {self.severity}, {self.ucr}, {self.crime_name}, {self.station_name}, {self.agency_name}, {self.crime_count}, {self.published})"
+        return (
+            f"CrimeVetted({self.year_month}, {self.year}, {self.month}, {self.fiscal_year},"
+            f" {self.transport_type}, {self.line_name}, {self.severity}, {self.ucr},"
+            f" {self.crime_name}, {self.station_name}, {self.agency_name}, {self.crime_count},"
+            f" {self.published})"
+        )
 
     def __str__(self):
         return self.__repr__()

@@ -24,5 +24,5 @@ def register_blueprints(app):
 
 
 # def app_setup(app):
-    # migrate = Migrate()
-    # migrate.init_app(app, engine)
+# migrate = Migrate()
+# migrate.init_app(app, engine)

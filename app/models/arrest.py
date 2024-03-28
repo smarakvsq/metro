@@ -21,7 +21,11 @@ class Arrest(Base):
     published = Column(Boolean)
 
     def __repr__(self):
-        return f"Arrest({self.year_month}, {self.year}, {self.month}, {self.fiscal_year}, {self.transport_type}, {self.line_name}, {self.gender}, {self.ethinicity}, {self.station_name}, {self.agency_name}, {self.arrest_count}, {self.published})"
+        return (
+            f"Arrest({self.year_month}, {self.year}, {self.month}, {self.fiscal_year},"
+            f" {self.transport_type}, {self.line_name}, {self.gender}, {self.ethinicity},"
+            f" {self.station_name}, {self.agency_name}, {self.arrest_count}, {self.published})"
+        )
 
     def __str__(self):
         return self.__repr__()

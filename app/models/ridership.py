@@ -20,7 +20,12 @@ class RidersSummary(Base):
     transport_type = Column(String)
 
     def __repr__(self):
-        return f"RidersSummary({self.year}, {self.month_number}, {self.day_type}, {self.line_name}, {self.provider}, {self.date_count}, {self.avg_daily_riders}, {self.avg_daily_pmiles}, {self.riders_total}, {self.pmiles_total}, {self.transport_type})"
+        return (
+            f"RidersSummary({self.year}, {self.month_number}, {self.day_type}, {self.line_name},"
+            f" {self.provider}, {self.date_count}, {self.avg_daily_riders},"
+            f" {self.avg_daily_pmiles}, {self.riders_total}, {self.pmiles_total},"
+            f" {self.transport_type})"
+        )
 
     def __str__(self):
         return self.__repr__()

@@ -19,7 +19,13 @@ class CallsForServiceLanding(Base):
     published = Column(Boolean)
 
     def __repr__(self):
-        return f"CallsForServiceLanding({self.transport_type}, {self.current_year_month}, {self.current_month_count}, {self.current_year_count}, {self.previous_year_month_count}, {self.previous_year_month_count_percent}, {self.previous_month_count}, {self.previous_month_count_percent}, {self.admin_review_id}, {self.published})"
+        return (
+            f"CallsForServiceLanding({self.transport_type}, {self.current_year_month},"
+            f" {self.current_month_count}, {self.current_year_count},"
+            f" {self.previous_year_month_count}, {self.previous_year_month_count_percent},"
+            f" {self.previous_month_count}, {self.previous_month_count_percent},"
+            f" {self.admin_review_id}, {self.published})"
+        )
 
     def __str__(self):
         return self.__repr__()
@@ -56,7 +62,12 @@ class ArrestLanding(Base):
     published = Column(Boolean)
 
     def __repr__(self):
-        return f"ArrestLanding({self.transport_type}, {self.current_year_month}, {self.current_month_count}, {self.current_year_count}, {self.previous_year_count}, {self.previous_year_count_percent}, {self.previous_month_count}, {self.previous_month_count_percent}, {self.admin_review_id}, {self.published})"
+        return (
+            f"ArrestLanding({self.transport_type}, {self.current_year_month},"
+            f" {self.current_month_count}, {self.current_year_count}, {self.previous_year_count},"
+            f" {self.previous_year_count_percent}, {self.previous_month_count},"
+            f" {self.previous_month_count_percent}, {self.admin_review_id}, {self.published})"
+        )
 
     def __str__(self):
         return self.__repr__()
@@ -95,7 +106,13 @@ class CrimeLanding(Base):
     published = Column(Boolean)
 
     def __repr__(self):
-        return f"CrimeLanding({self.transport_type}, {self.current_year_month}, {self.current_month_count}, {self.current_year_count}, {self.total_boardings}, {self.crime_per_100k_boardings}, {self.previous_year_count}, {self.previous_year_count_percent}, {self.previous_month_count}, {self.previous_month_count_percent}, {self.admin_review_id}, {self.published})"
+        return (
+            f"CrimeLanding({self.transport_type}, {self.current_year_month},"
+            f" {self.current_month_count}, {self.current_year_count}, {self.total_boardings},"
+            f" {self.crime_per_100k_boardings}, {self.previous_year_count},"
+            f" {self.previous_year_count_percent}, {self.previous_month_count},"
+            f" {self.previous_month_count_percent}, {self.admin_review_id}, {self.published})"
+        )
 
     def __str__(self):
         return self.__repr__()

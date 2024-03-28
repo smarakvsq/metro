@@ -14,7 +14,10 @@ class Location(Base):
     longitude = Column(Float)
 
     def __repr__(self):
-        return f"Location({self.transport_type}, {self.station_name}, {self.line_name}, {self.latitude}, {self.longitude})"
+        return (
+            f"Location({self.transport_type}, {self.station_name}, {self.line_name},"
+            f" {self.latitude}, {self.longitude})"
+        )
 
     def __str__(self):
         return self.__repr__()

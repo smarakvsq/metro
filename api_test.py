@@ -32,14 +32,15 @@ async def test_async_api(method, url, params=None, data=None, headers=None):
 async def main(get_url=None, post_url=None):
     # GET request
     tasks = []
-    for x in range(1): 
+    for x in range(1):
         tasks.append(test_async_api("GET", get_url))
     await asyncio.gather(*tasks, return_exceptions=True)
-    
+
 
 if __name__ == "__main__":
-    # url = "http://localhost:5000/dashboard_details?transport_type=Rail&published=true"
-    url = "http://localhost:5000/dashboard_details?published=true"
+    url = "http://localhost:5001/crime?route=rail&published=true"
+    # url = "http://localhost:5001/dashboard_details?transport_type=rail&published=true"
+    # url = "http://localhost:5000/dashboard_details?published=true"
     # url = "http://localhost:5000/routes?stat_type=arrest&vetted=true"
     # url = "http://127.0.0.1:5000/routes?type=crime&transport_type=rail"
     # url = "http://127.0.0.1:5000/crime?transport_type=rail&route=route_a"
