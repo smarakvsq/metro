@@ -6,7 +6,7 @@ route_blueprint = Blueprint("route", __name__)
 
 
 @route_blueprint.route("/routes/")
-@validate_and_get_args(stat_type=True, transport_type=False, vetted=True)
+@validate_and_get_args(stat_type=True, transport_type=False, vetted=False)
 async def get_routes(body):
     stat_type = body.get("stat_type")
     transport_type = body.get("transport_type")

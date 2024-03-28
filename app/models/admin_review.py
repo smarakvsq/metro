@@ -70,6 +70,7 @@ class AdminReview(Base):
 
         return comment
 
+    @staticmethod
     async def get_comment(
         year_month,
         stat_type: str,
@@ -78,13 +79,14 @@ class AdminReview(Base):
         transport_type: str,
         section_heading: str,
         sub_section_heading: str,
+        published: bool
     ):
         comments = ""
-
         filters = [
             AdminReview.vetted == vetted,
             AdminReview.section_heading == section_heading,
             AdminReview.year_month == year_month,
+            AdminReview.published == published
         ]
 
         page_type = getattr(PageType, stat_type.upper())

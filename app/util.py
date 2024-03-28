@@ -61,17 +61,9 @@ def validate_and_get_args(**kwargs):
 
 
 async def parse_date(date_string):
-    date_obj = None
-    try:
-        date_obj = datetime.strptime(date_string, "%Y-%m")
-    except Exception as exc:
-        print(exc)
-        raise ValueError(str(exc))
-
+    date_obj = datetime.strptime(date_string, "%Y-%m-%d")
     return date_obj
 
 
 async def select_crime_table(vetted: bool):
     return CrimeVetted if vetted else CrimeUnvetted
-
-
