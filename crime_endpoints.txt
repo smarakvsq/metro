@@ -1,0 +1,66 @@
+Get UCR: GET /crime 
+    url_params:
+        line_name: optional
+        transport_type: optional
+        vetted: required
+        severity: optional 
+
+Get crime data Bar graph: POST /crime/data
+    request_body:
+        line_name: optional
+        dates: required ["2024-01-01", "2023-12-1", "2023-10-1"]
+        transport_type: optional
+        severity: required
+        crime_category: optional
+        vetted: required
+        published: required
+        graph_type: required bar
+
+Get crime data Line graph: POST /crime/data
+    request_body:
+        line_name: optional
+        dates: required ["2024-01-01", "2023-12-1", "2023-10-1"]
+        transport_type: optional
+        severity: required
+        crime_category: optional
+        vetted: required
+        published: required
+        graph_type: required line
+
+Get crime data agency wide Bar graph: POST /crime/data/agency
+    request_body:
+        line_name: optional
+        dates: required ["2024-01-01", "2023-12-1", "2023-10-1"]
+        transport_type: optional
+        severity: required
+        crime_category: optional
+        vetted: required
+        published: required
+        graph_type: required bar
+
+Get crime data agency wide Line graph: POST /crime/data/agency
+    request_body:
+        line_name: optional
+        dates: required ["2024-01-01", "2023-12-1", "2023-10-1"]
+        transport_type: optional
+        severity: required
+        crime_category: optional
+        vetted: required
+        published: required
+        graph_type: required line
+
+Get Section comment: POST /crime/comment
+    request_body:
+        line_name: optional
+        transport_type: optional
+        vetted: required
+        dates: required ["2024-01-01", "2023-12-1", "2023-10-1"] # Comment available only for single month selection
+        section: required
+        published: required
+        crime_category: optional
+    
+Get list of dates: GET /crime/date_details
+    url_params:
+        transport_type: optional
+        vetted: required
+        published: required 

@@ -1,11 +1,13 @@
 from pydantic import BaseModel
-from typing import Optional
+from typing import Optional, List
 
 
-class CrimeDetails(BaseModel):
-    route: str
-    transport_type: str
-    from_date: str
-    to_date: str
-    crime_type: str
-    crime_category: str
+class CrimeSchema(BaseModel):
+    line_name: Optional[str]
+    transport_type: Optional[str]
+    dates: List[str]
+    severity: str
+    crime_category: Optional[str]
+    vetted: bool
+    published: bool
+    graph_type: str
