@@ -69,11 +69,6 @@ async def get_crime_data_bar(json_data):
             .group_by(Table.crime_name)
         )
         data = (await sess.execute(query)).all()
-        # print(
-        #     "***********************************************\n",
-        #     data,
-        #     "\n***********************************************",
-        # )
         json_data = {crime_name: count for crime_name, count in data}
 
     crime_data = {}
