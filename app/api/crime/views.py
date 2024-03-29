@@ -63,29 +63,33 @@ async def crime_data_agency():
     return jsonify(crime_data), 200
 
 
-@crime_blueprint.route("/crime/comment")
-@validate_and_get_args(
-    line_name=False,
-    transport_type=False,
-    from_date=True,
-    to_date=True,
-    section=True,
-    vetted=True,
-    published=True,
-    crime_category=False,
-)
-async def get_section_comments(body):
-    body["from_date"] = await parse_date(body.get("from_date"))
-    body["to_date"] = await parse_date(body.get("to_date"))
-    year_months = await get_year_months_for_comment(body)
-    if len(year_months) != 1:
+@crime_blueprint.route("/crime/comment", methods=["POST"])
+# @validate_and_get_args(
+#     line_name=False,
+#     transport_type=False,
+#     from_date=True,
+#     to_date=True,
+#     section=True,
+#     vetted=True,
+#     published=True,
+#     crime_category=False,
+# )
+async def get_section_comments():
+    print("request body", request.json)
+    body = request.json
+    
+    if not body.get("dates") and not isinstance(body.get("dates"), list):
+        return jsonify({"Error": "dates field should be a list."}), 400
+    
+    if len(body.get("dates")) != 1:
         return jsonify(
             {
                 "comments": "",
-                "message": f"Number of months are {len(year_months)}. Comments available only for single month selection.",
+                "message": f"Number of months are {len(body.get('dates'))}. Comments available only for single month selection.",
             }
         )
-    year_month = year_months[0]
+    year_month = await parse_date(body.get("dates")[0])
+    
     comment = ""
     try:
         comment = await get_crime_comment(

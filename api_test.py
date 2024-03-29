@@ -54,7 +54,9 @@ async def main(get_url=None, post_url=None, json_data=None):
 
 
 if __name__ == "__main__":
+    # url = "http://localhost:5001/crime/data/"
     # url = "http://localhost:5001/crime/data/agency"
+    url = "http://localhost:5001/crime/comment"
     json_data_bar = {
         "line_name": "A Line (Blue)",
         "dates": ["2024-01-01", "2023-12-1", "2023-10-1"],
@@ -75,6 +77,16 @@ if __name__ == "__main__":
         "published": True,
         "graph_type": "line"
     }
+    json_data_comment = {
+        "line_name": "A Line (Blue)",
+        "transport_type": "rail",
+        "vetted": True,
+        # "dates": ["2024-01-01", "2023-12-1", "2023-10-1"],
+        "dates": ["2023-11-01"],
+        "section": "serious_crime",
+        "published": True,
+        "crime_category": "persons"
+    }
     # url = "http://localhost:5001//crime/data?line_name=A%20Line%20(Blue)&from_date=2024-01-01&to_date=2024-02-01&severity=serious_crime&crime_category=persons&vetted=true&published=false&graph_type=bar"
     # url = "http://localhost:5001//crime/data?line_name=A%20Line%20(Blue)&from_date=2024-01-01&to_date=2024-02-01&severity=serious_crime&vetted=true&published=false&graph_type=bar"
     # url = "http://localhost:5001//crime/date_details?vetted=true&published=false&transport_type=rail"
@@ -86,7 +98,7 @@ if __name__ == "__main__":
     # url = "http://localhost:5000/dashboard_details?published=true"
     # url = "http://localhost:5001/routes?stat_type=call_for_services&vetted=true&transport_type=rail"
     # url = "http://13.233.193.48:5000/routes?stat_type=arrest&vetted=true&transport_type=rail"
-    url = "http://127.0.0.1:5001/crime?transport_type=rail&line_name=A%20Line%20(Blue)&vetted=false"
+    # url = "http://127.0.0.1:5001/crime?transport_type=rail&line_name=A%20Line%20(Blue)&vetted=false"
     # url = "http://127.0.0.1:5000//crime/data?transport_type=rail&route=route_a&from_date=2023-10&to_date=2023-12&crime_type=person&crime_category=major"
-    # asyncio.run(main(post_url=url, json_data=json_data_line))
-    asyncio.run(main(get_url=url))
+    asyncio.run(main(post_url=url, json_data=json_data_comment))
+    # asyncio.run(main(get_url=url))
