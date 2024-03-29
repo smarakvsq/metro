@@ -63,16 +63,6 @@ async def crime_data_agency():
 
 
 @crime_blueprint.route("/crime/comment", methods=["POST"])
-# @validate_and_get_args(
-#     line_name=False,
-#     transport_type=False,
-#     from_date=True,
-#     to_date=True,
-#     section=True,
-#     vetted=True,
-#     published=True,
-#     crime_category=False,
-# )
 async def get_section_comments():
     print("request body", request.json)
     body = request.json
