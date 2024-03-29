@@ -18,6 +18,6 @@ async def get_routes(body):
         lines = await get_unique_lines(
             stat_type=stat_type, vetted=vetted, transport_type=transport_type
         )
-        print(lines)
-
+    if isinstance(lines, dict) and "Error" in lines.keys():
+        return jsonify(lines), 400
     return jsonify(lines), 200

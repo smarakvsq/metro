@@ -6,7 +6,6 @@ from app.api.crime.crime_utils import (
     get_crime_data_line,
     get_crime_data_agency_bar,
     get_crime_data_agency_line,
-    get_year_months_for_comment,
     get_crime_comment,
     get_year_months
 )
