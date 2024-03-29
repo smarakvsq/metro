@@ -19,3 +19,10 @@ class CrimeSectionHeading:
     SERIOUS_CRIME = "serious_crime"
     GENERAL_CRIME = "general_crime"
     AGENCY_WIDE = "agency_wide"
+
+
+class GraphType:
+    BAR = "bar"
+    LINE = "line"
+    PIE = "pie"
+    GEO = "geo"

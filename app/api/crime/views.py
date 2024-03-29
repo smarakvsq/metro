@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify
+from flask import Blueprint, jsonify, request
 from app.util import validate_and_get_args, parse_date
 from app.api.crime.crime_utils import (
     get_unique_ucr,
@@ -8,13 +8,14 @@ from app.api.crime.crime_utils import (
     get_crime_data_agency_line,
     get_year_months_for_comment,
     get_crime_comment,
+    get_year_months
 )
 
 crime_blueprint = Blueprint("crime", __name__)
 
 
 @crime_blueprint.route("/crime")
-@validate_and_get_args(line_name=False, transport_type=False, vetted=True, severity=True)
+@validate_and_get_args(line_name=False, transport_type=False, vetted=True, severity=False)
 async def get_crime_category(body):
     print("request body", body)
     data = await get_unique_ucr(
@@ -26,56 +27,38 @@ async def get_crime_category(body):
     return jsonify(data), 200
 
 
-@crime_blueprint.route("/crime/data")
-@validate_and_get_args(
-    line_name=False,
-    transport_type=False,
-    from_date=True,
-    to_date=True,
-    severity=True,
-    crime_category=False,
-    vetted=True,
-    published=True,
-    graph_type=True,
-)
-async def crime_data(body):
-    print("request body", body)
+@crime_blueprint.route("/crime/data", methods=["POST"])
+async def crime_data():
+    print("request body", request.json)
+    body = request.json
     crime_data = {}
     graph_mapper = {
         "bar": get_crime_data_bar,
         "line": get_crime_data_line,
     }
-    body["from_date"] = await parse_date(body.get("from_date"))
-    body["to_date"] = await parse_date(body.get("to_date"))
+    if not body.get("dates") and not isinstance(body.get("dates"), list):
+        return jsonify({"Error": "dates field should be a list."})
+    
+    body["dates"] = [await parse_date(x) for x in body.get("dates")]
     crime_data = await graph_mapper[body.get("graph_type")](body)
     return jsonify(crime_data), 200
 
 
-@crime_blueprint.route("/crime/data/agency")
-@validate_and_get_args(
-    line_name=False,
-    transport_type=False,
-    from_date=True,
-    to_date=True,
-    severity=True,
-    crime_category=False,
-    vetted=True,
-    published=True,
-    graph_type=True,
-)
-async def crime_data_agency(body):
-    print(body)
+@crime_blueprint.route("/crime/data/agency", methods=["POST"])
+async def crime_data_agency():
+    print("request body", request.json)
+    body = request.json
     crime_data = {}
     graph_mapper = {
         "bar": get_crime_data_agency_bar,
         "line": get_crime_data_agency_line,
     }
-    try:
-        body["from_date"] = await parse_date(body.get("from_date"))
-        body["to_date"] = await parse_date(body.get("to_date"))
-        crime_data = await graph_mapper[body.get("graph_type")](body)
-    except Exception as exc:
-        jsonify({"Error": str(exc)}), 400
+    
+    if not body.get("dates") and not isinstance(body.get("dates"), list):
+        return jsonify({"Error": "dates field should be a list."})
+
+    body["dates"] = [await parse_date(x) for x in body.get("dates")]
+    crime_data = await graph_mapper[body.get("graph_type")](body)
 
     return jsonify(crime_data), 200
 
@@ -119,3 +102,11 @@ async def get_section_comments(body):
         return jsonify({"Error": str(exc)}), 400
 
     return jsonify({"comment": comment}), 200
+
+
+@crime_blueprint.route("/crime/date_details")
+@validate_and_get_args(vetted=True, published=True, transport_type=False)
+async def get_date_details(body):
+    year_months_obj_list = await get_year_months(vetted=body.get("published"), published=body.get("published"), transport_type=body.get("transport_type"))
+    year_months = [date_obj.strftime("%Y-%-m-%-d") for date_obj in year_months_obj_list]
+    return jsonify(year_months), 200

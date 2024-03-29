@@ -1,6 +1,18 @@
 import aiohttp
 import asyncio
 
+routes = {
+    "crime_ucr": ["crime?transport_type=rail&line_name=A%20Line%20(Blue)&vetted=false&severity=serious_crime"],
+    "crime_data": ["/crime/data"],
+    "crime_date": [],
+    "crime_data_agency": ["/crime/data/agency"],
+    "routes": [],
+    "dashboard": []
+    # url = "http://localhost:5001/routes?stat_type=call_for_services&vetted=true&transport_type=rail"
+    # url = "http://13.233.193.48:5000/routes?stat_type=arrest&vetted=true&transport_type=rail"
+}
+
+    
 
 async def test_async_api(method, url, params=None, data=None, headers=None):
     """
@@ -29,18 +41,44 @@ async def test_async_api(method, url, params=None, data=None, headers=None):
             return {"status_code": response.status, "response": response_data}
 
 
-async def main(get_url=None, post_url=None):
+async def main(get_url=None, post_url=None, json_data=None):
     # GET request
     tasks = []
     for x in range(1):
-        tasks.append(test_async_api("GET", get_url))
+        if post_url:
+            tasks.append(test_async_api("POST", url=post_url, data=json_data))
+        
+        if get_url:
+            tasks.append(test_async_api("GET", get_url))
     await asyncio.gather(*tasks, return_exceptions=True)
 
 
 if __name__ == "__main__":
+    # url = "http://localhost:5001/crime/data/agency"
+    json_data_bar = {
+        "line_name": "A Line (Blue)",
+        "dates": ["2024-01-01", "2023-12-1", "2023-10-1"],
+        "transport_type": "rail",
+        "severity": "serious_crime",
+        "crime_category": "persons",
+        "vetted": True,
+        "published": True,
+        "graph_type": "bar"
+    }
+    json_data_line = {
+        "line_name": "A Line (Blue)",
+        "dates": ["2024-01-01", "2023-12-1", "2023-10-1"],
+        "transport_type": "rail",
+        "severity": "serious_crime",
+        "crime_category": "persons",
+        "vetted": True,
+        "published": True,
+        "graph_type": "line"
+    }
     # url = "http://localhost:5001//crime/data?line_name=A%20Line%20(Blue)&from_date=2024-01-01&to_date=2024-02-01&severity=serious_crime&crime_category=persons&vetted=true&published=false&graph_type=bar"
     # url = "http://localhost:5001//crime/data?line_name=A%20Line%20(Blue)&from_date=2024-01-01&to_date=2024-02-01&severity=serious_crime&vetted=true&published=false&graph_type=bar"
-    url = "http://localhost:5001/crime/comment?line_name=A%20Line%20(Blue)&from_date=2023-11-01&to_date=2023-11-30&section=serious_crime&vetted=true&published=false&crime_category=persons&transport_type=rail"
+    # url = "http://localhost:5001//crime/date_details?vetted=true&published=false&transport_type=rail"
+    # url = "http://localhost:5001/crime/comment?line_name=A%20Line%20(Blue)&from_date=2023-11-01&to_date=2023-11-30&section=serious_crime&vetted=true&published=false&crime_category=persons&transport_type=rail"
     # url = "http://localhost:5001//crime/data/agency?line_name=A%20Line%20(Blue)&from_date=2024-01-01&to_date=2024-02-01&severity=serious_crime&crime_category=persons&vetted=true&published=false&graph_type=bar"
     # url = "http://localhost:5001//crime/data?line_name=A%20Line%20(Blue)&transport_type=rail&from_date=2024-01-01&to_date=2024-02-01&severity=serious_crime&crime_category=persons&vetted=true&published=false"
     # url = "http://localhost:5001//crime/data?line_name=A%20Line%20(Blue)&transport_type=rail&from_date=2024-01-01&to_date=2024-02-01&severity=serious_crime&crime_category=persons&vetted=false&published=false"
@@ -48,6 +86,7 @@ if __name__ == "__main__":
     # url = "http://localhost:5000/dashboard_details?published=true"
     # url = "http://localhost:5001/routes?stat_type=call_for_services&vetted=true&transport_type=rail"
     # url = "http://13.233.193.48:5000/routes?stat_type=arrest&vetted=true&transport_type=rail"
-    # url = "http://127.0.0.1:5001/crime?transport_type=rail&line_name=A%20Line%20(Blue)&vetted=true&severity=serious_crime"
+    url = "http://127.0.0.1:5001/crime?transport_type=rail&line_name=A%20Line%20(Blue)&vetted=false"
     # url = "http://127.0.0.1:5000//crime/data?transport_type=rail&route=route_a&from_date=2023-10&to_date=2023-12&crime_type=person&crime_category=major"
+    # asyncio.run(main(post_url=url, json_data=json_data_line))
     asyncio.run(main(get_url=url))
