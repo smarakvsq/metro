@@ -74,20 +74,21 @@ class AdminReview(Base):
     async def get_comment(
         year_month,
         stat_type: str,
-        vetted: bool,
         line_name: str,
         transport_type: str,
         section_heading: str,
-        sub_section_heading: str,
-        published: bool
+        published: bool,
+        vetted: bool = None,
+        sub_section_heading: str = None,
     ):
         comments = ""
         filters = [
-            AdminReview.vetted == vetted,
             AdminReview.section_heading == section_heading,
             AdminReview.year_month == year_month,
             AdminReview.published == published
         ]
+        if vetted is not None:
+            filters.append(AdminReview.vetted == vetted)
 
         page_type = getattr(PageType, stat_type.upper())
 
@@ -105,11 +106,12 @@ class AdminReview(Base):
             filters.append(AdminReview.transport_type == transport_type)
         else:
             filters.append(AdminReview.transport_type == TransportType.SYSTEM_WIDE)
-
-        if sub_section_heading:
-            filters.append(AdminReview.sub_section_heading == sub_section_heading)
-        else:
-            filters.append(AdminReview.sub_section_heading == "all")
+        
+        if sub_section_heading is not None:
+            if sub_section_heading:
+                filters.append(AdminReview.sub_section_heading == sub_section_heading)
+            else:
+                filters.append(AdminReview.sub_section_heading == "all")
 
         async with get_session() as sess:
             comments = (await sess.scalars(select(AdminReview.comments).where(*filters))).first()

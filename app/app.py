@@ -1,6 +1,6 @@
 from flask import Flask
 from flask_migrate import Migrate
-from app.api import dashboard_blueprint, route_blueprint, crime_blueprint
+from app.api import dashboard_blueprint, route_blueprint, crime_blueprint, arrest_blueprint
 from app.middleware import cors
 
 
@@ -21,6 +21,7 @@ def register_blueprints(app):
     app.register_blueprint(dashboard_blueprint)
     app.register_blueprint(route_blueprint)
     app.register_blueprint(crime_blueprint)
+    app.register_blueprint(arrest_blueprint)
 
 
 # def app_setup(app):
