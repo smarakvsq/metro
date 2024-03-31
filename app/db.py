@@ -1,11 +1,14 @@
 from contextlib import asynccontextmanager
-
+from app.config import Settings
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
 import threading
 
-conn_string = "postgresql+asyncpg://metro:Metro2024@13.233.193.48:5432/metro"
-# conn_string = "postgresql+asyncpg://vms_user:1234@localhost:5432/metro"
+settings = Settings()
+
+conn_string = f"postgresql+asyncpg://{settings.db_user}:{settings.db_pass}@{settings.db_host}/{settings.db_name}"
+
+print(f"Connection string: {conn_string}")
 
 Base = declarative_base()
 db_connections = threading.local()

@@ -61,6 +61,7 @@ if __name__ == "__main__":
     # url = "http://localhost:5001/crime/data/agency"
     # url = "http://localhost:5001/crime/comment"
     post_url = routes["arrest_comment"][0]
+
     json_data_bar = {
         "line_name": "A Line (Blue)",
         "dates": ["2024-01-01", "2023-12-1", "2023-10-1"],

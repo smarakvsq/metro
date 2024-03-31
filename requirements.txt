@@ -14,3 +14,4 @@ aiohttp
 flask-cors
 black
 asgiref
+pydantic-settings
