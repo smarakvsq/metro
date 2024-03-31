@@ -56,7 +56,7 @@ async def main(get_url=None, post_url=None, json_data=None):
 if __name__ == "__main__":
     # url = "http://localhost:5001/crime/data/"
     # url = "http://localhost:5001/crime/data/agency"
-    url = "http://localhost:5001/crime/comment"
+    url = "http://localhost:5000/crime/comment"
     json_data_bar = {
         "line_name": "A Line (Blue)",
         "dates": ["2024-01-01", "2023-12-1", "2023-10-1"],
