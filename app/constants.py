@@ -26,3 +26,8 @@ class GraphType:
     LINE = "line"
     PIE = "pie"
     GEO = "geo"
+
+
+class Gender:
+    MALE = "male"
+    FEMALE = "female"
