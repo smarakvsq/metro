@@ -7,7 +7,7 @@ class TransportType:
 class PageType:
     CRIME = "crime"
     ARREST = "arrest"
-    CALL_FOR_SERVICE = "call_for_service"
+    CALLS_FOR_SERVICE = "calls_for_service"
 
 
 class Vet:
