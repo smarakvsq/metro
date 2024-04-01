@@ -23,7 +23,10 @@ routes = {
     "cfs_data": [f"{host_url}/call_for_service/data"],
     "cfs_agency_data": [f"{host_url}/call_for_service/data/agency"],
     "cfs_comment": [f"{host_url}/call_for_service/comment"],
-    "cfs_date": [f"{host_url}/call_for_service/date_details?published=true&transport_type=rail", f"{host_url}/call_for_service/date_details?published=true"]
+    "cfs_date": [
+        f"{host_url}/call_for_service/date_details?published=true&transport_type=rail",
+        f"{host_url}/call_for_service/date_details?published=true",
+    ],
 }
 
 crime_bar = {
@@ -105,14 +108,14 @@ cfs_data_bar = {
     "dates": ["2024-01-01", "2023-12-1", "2023-10-1"],
     "transport_type": "rail",
     "published": True,
-    "graph_type": "bar",    
+    "graph_type": "bar",
 }
 cfs_data_line = {
     "line_name": "A Line (Blue)",
     "dates": ["2024-01-01", "2023-12-1", "2023-10-1"],
     "transport_type": "rail",
     "published": True,
-    "graph_type": "line",    
+    "graph_type": "line",
 }
 cfs_agency_bar = {
     "line_name": "A Line (Blue)",
@@ -138,6 +141,7 @@ cfs_comment = {
     "section": "calls_classification",
     "published": True,
 }
+
 
 async def test_async_api(method, url, params=None, data=None, headers=None):
     """
@@ -184,7 +188,6 @@ if __name__ == "__main__":
     # url = "http://localhost:5001/crime/comment"
     post_url = routes["cfs_comment"][0]
 
-    
     # url = "http://localhost:5001//crime/data?line_name=A%20Line%20(Blue)&from_date=2024-01-01&to_date=2024-02-01&severity=serious_crime&crime_category=persons&vetted=true&published=false&graph_type=bar"
     # url = "http://localhost:5001//crime/data?line_name=A%20Line%20(Blue)&from_date=2024-01-01&to_date=2024-02-01&severity=serious_crime&vetted=true&published=false&graph_type=bar"
     # url = "http://localhost:5001//crime/date_details?vetted=true&published=false&transport_type=rail"
