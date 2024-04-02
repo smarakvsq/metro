@@ -205,4 +205,5 @@ async def main(get_url=None, post_url=None, json_data=None):
 if __name__ == "__main__":
     post_url = routes["arrest_agency_data"][0]
     asyncio.run(main(post_url=post_url, json_data=arrest_agency_bar))
+
     # asyncio.run(main(get_url=routes["cfs_date"][1]))
