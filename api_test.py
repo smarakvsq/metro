@@ -93,9 +93,9 @@ arrest_line = {
     "transport_type": "rail",
     "gender": "female",
     "published": True,
-    # "dates": ["2024-01-01", "2023-12-1", "2023-10-1"],
-    "dates": ["2024-01-01"],
-    "graph_type": "pie",
+    "dates": ["2024-01-01", "2023-12-1", "2023-10-1"],
+    # "dates": ["2024-01-01"],
+    "graph_type": "line",
 }
 arrest_agency_bar = {
     "line_name": "A Line (Blue)",
@@ -111,8 +111,8 @@ arrest_agency_line = {
     "transport_type": "rail",
     "gender": "female",
     "published": True,
-    # "dates": ["2024-01-01", "2023-12-1", "2023-10-1"],
-    "dates": ["2024-01-01"],
+    "dates": ["2024-01-01", "2023-12-1", "2023-10-1"],
+    # "dates": ["2024-01-01"],
     "graph_type": "line",
 }
 arrest_comment = {
@@ -203,6 +203,6 @@ async def main(get_url=None, post_url=None, json_data=None):
 
 
 if __name__ == "__main__":
-    post_url = routes["crime_data_agency"][0]
-    asyncio.run(main(post_url=post_url, json_data=crime_agency_line))
+    post_url = routes["arrest_agency_data"][0]
+    asyncio.run(main(post_url=post_url, json_data=arrest_agency_bar))
     # asyncio.run(main(get_url=routes["cfs_date"][1]))
