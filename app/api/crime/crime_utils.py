@@ -123,7 +123,6 @@ async def get_crime_data_line(json_data):
         data = (await sess.execute(query)).all()
     
     if data:
-        print("data", data)
         formatted_data = {}
         for month, crime, count in data:
             if count != 0:
