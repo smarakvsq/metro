@@ -21,8 +21,7 @@ async def get_unique_lines(stat_type: str, vetted: bool, transport_type: str):
     data = []
 
     if (stat_type == PageType.CRIME) and (vetted is None):
-        return ({"Error": f"vetted required for type {stat_type}"})
-
+        return {"Error": f"vetted required for type {stat_type}"}
 
     Table = await select_stat_table(stat_type, vetted)
     async with get_session() as sess:
@@ -31,5 +30,5 @@ async def get_unique_lines(stat_type: str, vetted: bool, transport_type: str):
                 select(Table.line_name).where(Table.transport_type == transport_type).distinct()
             )
         ).all()
-    
+
     return data

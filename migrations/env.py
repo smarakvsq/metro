@@ -15,6 +15,7 @@ logging.basicConfig(level=logging.INFO)
 # access to the values within the .ini file in use.
 config = context.config
 from app.config import Settings
+
 settings = Settings()
 
 section = config.config_ini_section

@@ -7,7 +7,7 @@ from app.api.crime.crime_utils import (
     get_crime_data_agency_bar,
     get_crime_data_agency_line,
     get_crime_comment,
-    get_year_months
+    get_year_months,
 )
 
 crime_blueprint = Blueprint("crime", __name__)
@@ -37,7 +37,7 @@ async def crime_data():
     }
     if not body.get("dates") and not isinstance(body.get("dates"), list):
         return jsonify({"Error": "dates field should be a list."})
-    
+
     body["dates"] = [await parse_date(x) for x in body.get("dates")]
     crime_data = await graph_mapper[body.get("graph_type")](body)
     return jsonify(crime_data), 200
@@ -52,7 +52,7 @@ async def crime_data_agency():
         "bar": get_crime_data_agency_bar,
         "line": get_crime_data_agency_line,
     }
-    
+
     if not body.get("dates") and not isinstance(body.get("dates"), list):
         return jsonify({"Error": "dates field should be a list."})
 
@@ -66,10 +66,10 @@ async def crime_data_agency():
 async def get_section_comments():
     print("request body", request.json)
     body = request.json
-    
+
     if not body.get("dates") and not isinstance(body.get("dates"), list):
         return jsonify({"Error": "dates field should be a list."}), 400
-    
+
     if len(body.get("dates")) != 1:
         return jsonify(
             {
@@ -78,7 +78,7 @@ async def get_section_comments():
             }
         )
     year_month = await parse_date(body.get("dates")[0])
-    
+
     comment = ""
     try:
         comment = await get_crime_comment(
@@ -88,7 +88,7 @@ async def get_section_comments():
             section_heading=body.get("section"),
             sub_section_heading=body.get("crime_category"),
             year_month=year_month,
-            published=body.get("published")
+            published=body.get("published"),
         )
     except Exception as exc:
         print(exc)
@@ -100,6 +100,10 @@ async def get_section_comments():
 @crime_blueprint.route("/crime/date_details")
 @validate_and_get_args(vetted=True, published=True, transport_type=False)
 async def get_date_details(body):
-    year_months_obj_list = await get_year_months(vetted=body.get("vetted"), published=body.get("published"), transport_type=body.get("transport_type"))
+    year_months_obj_list = await get_year_months(
+        vetted=body.get("vetted"),
+        published=body.get("published"),
+        transport_type=body.get("transport_type"),
+    )
     year_months = [date_obj.strftime("%Y-%-m-%-d") for date_obj in year_months_obj_list]
     return jsonify(year_months), 200

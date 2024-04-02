@@ -85,7 +85,7 @@ class AdminReview(Base):
         filters = [
             AdminReview.section_heading == section_heading,
             AdminReview.year_month == year_month,
-            AdminReview.published == published
+            AdminReview.published == published,
         ]
         if vetted is not None:
             filters.append(AdminReview.vetted == vetted)
@@ -106,13 +106,14 @@ class AdminReview(Base):
             filters.append(AdminReview.transport_type == transport_type)
         else:
             filters.append(AdminReview.transport_type == TransportType.SYSTEM_WIDE)
-        
+
         if sub_section_heading is not None:
             if sub_section_heading:
                 filters.append(AdminReview.sub_section_heading == sub_section_heading)
             else:
                 filters.append(AdminReview.sub_section_heading == "all")
 
+        print(filters)
         async with get_session() as sess:
             comments = (await sess.scalars(select(AdminReview.comments).where(*filters))).first()
 

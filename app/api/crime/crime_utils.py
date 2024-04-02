@@ -23,7 +23,7 @@ async def get_unique_ucr(line_name: str, vetted: bool, transport_type: str, seve
 
     if line_name:
         filters.append(Table.line_name == line_name)
-        
+
     async with get_session() as sess:
         data = (await sess.scalars(select(Table.ucr).where(*filters).distinct())).all()
 
@@ -106,7 +106,7 @@ async def get_crime_data_line(json_data):
 
     if dates:
         filters.append(Table.year_month.in_(dates))
-        
+
     data = []
     async with get_session() as sess:
         query = (
@@ -120,7 +120,7 @@ async def get_crime_data_line(json_data):
             .order_by(Table.year_month)
         )
         data = (await sess.execute(query)).all()
-    
+
     if data:
         formatted_data = {}
         line_data = []
@@ -130,9 +130,7 @@ async def get_crime_data_line(json_data):
                 if month not in formatted_data:
                     formatted_data[month] = {}
                 formatted_data[month][crime] = count
-        line_data = [
-            {"name": date_, **data} for date_, data in formatted_data.items()
-        ]
+        line_data = [{"name": date_, **data} for date_, data in formatted_data.items()]
     crime_data = {}
     if line_data:
         crime_data.update({"crime_line_data": line_data})
@@ -181,7 +179,7 @@ async def get_crime_data_agency_bar(json_data):
     crime_data = {}
     if json_data:
         crime_data.update({"agency_wide_bar_data": json_data})
- 
+
     return crime_data
 
 
@@ -234,9 +232,7 @@ async def get_crime_data_agency_line(json_data):
                 if month not in formatted_data:
                     formatted_data[month] = {}
                 formatted_data[month][crime] = count
-        line_data = [
-            {"name": date_, **data} for date_, data in formatted_data.items()
-        ]
+        line_data = [{"name": date_, **data} for date_, data in formatted_data.items()]
     crime_data = {}
     if line_data:
         crime_data.update({"agency_wide_line_data": line_data})
@@ -251,7 +247,7 @@ async def get_crime_comment(
     section_heading: str,
     sub_section_heading: str,
     year_month,
-    published: bool
+    published: bool,
 ):
     comment = ""
 
@@ -264,7 +260,7 @@ async def get_crime_comment(
             transport_type=transport_type,
             section_heading=section_heading,
             sub_section_heading=sub_section_heading,
-            published=published
+            published=published,
         )
     except Exception as exc:
         print(exc)
@@ -316,7 +312,7 @@ async def get_year_months_for_comment(json_data: dict):
 
 async def get_year_months(vetted: bool, published: bool, transport_type: str):
     data = []
-    
+
     Table = await select_crime_table(vetted=vetted)
     filters = [Table.published == published]
 
@@ -324,6 +320,8 @@ async def get_year_months(vetted: bool, published: bool, transport_type: str):
         filters.append(Table.transport_type == transport_type)
 
     async with get_session() as sess:
-        query = select(Table.year_month).where(*filters).distinct().order_by(Table.year_month.desc())
+        query = (
+            select(Table.year_month).where(*filters).distinct().order_by(Table.year_month.desc())
+        )
         data = (await sess.scalars(query)).all()
     return data
