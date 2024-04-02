@@ -38,7 +38,7 @@ async def get_call_for_service_bar(json_data):
             .group_by(CallForService.call_type)
         )
         data = (await sess.execute(query)).all()
-        formatted_data = {call_type: count for call_type, count in data}
+        formatted_data = {call_type: count for call_type, count in data if count != 0}
 
     call_for_service_data = {}
     if formatted_data:
@@ -66,7 +66,6 @@ async def get_call_for_service_line(json_data):
         filters.append(CallForService.year_month.in_(dates))
 
     data = []
-    formatted_data = []
 
     async with get_session() as sess:
         query = (
@@ -77,19 +76,25 @@ async def get_call_for_service_line(json_data):
             )
             .where(*filters)
             .group_by(CallForService.year_month, CallForService.call_type)
+            .order_by(CallForService.year_month)
         )
         data = (await sess.execute(query)).all()
+
+    line_data = []
+    
     if data:
         formatted_data = {}
         for month, call_type, count in data:
-            month = month.strftime("%b-%Y")
+            month = month.strftime("%Y-%-m-%-d")
             if month not in formatted_data:
                 formatted_data[month] = {}
             formatted_data[month][call_type] = count
-
+        line_data = [
+            {"name": date_, **data} for date_, data in formatted_data.items()
+        ]
     call_for_service_data = {}
-    if formatted_data:
-        call_for_service_data.update({"call_for_service_line_data": formatted_data})
+    if line_data:
+        call_for_service_data.update({"call_for_service_line_data": line_data})
     return call_for_service_data
 
 
@@ -125,7 +130,7 @@ async def get_call_for_service_agency_wide_bar(json_data):
             .group_by(CallForService.agency_name)
         )
         data = (await sess.execute(query)).all()
-        formatted_data = {agency_name: count for agency_name, count in data}
+        formatted_data = {agency_name: count for agency_name, count in data if count != 0}
 
     call_for_service_data = {}
     if formatted_data:
@@ -153,7 +158,6 @@ async def get_call_for_service_agency_wide_line(json_data):
         filters.append(CallForService.year_month.in_(dates))
 
     data = []
-    formatted_data = []
 
     async with get_session() as sess:
         query = (
@@ -164,19 +168,24 @@ async def get_call_for_service_agency_wide_line(json_data):
             )
             .where(*filters)
             .group_by(CallForService.year_month, CallForService.agency_name)
+            .order_by(CallForService.year_month)
         )
         data = (await sess.execute(query)).all()
+    line_data = []
+    
     if data:
         formatted_data = {}
         for month, agency_name, count in data:
-            month = month.strftime("%b-%Y")
+            month = month.strftime("%Y-%-m-%-d")
             if month not in formatted_data:
                 formatted_data[month] = {}
             formatted_data[month][agency_name] = count
-
+        line_data = [
+            {"name": date_, **data} for date_, data in formatted_data.items()
+        ]
     call_for_service_data = {}
-    if formatted_data:
-        call_for_service_data.update({"call_for_service_agency_wide_line": formatted_data})
+    if line_data:
+        call_for_service_data.update({"call_for_service_agency_wide_line": line_data})
     return call_for_service_data
 
 
