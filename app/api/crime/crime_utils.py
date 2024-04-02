@@ -123,14 +123,20 @@ async def get_crime_data_line(json_data):
 
     if data:
         formatted_data = {}
-        line_data = []
+        crime_names = set()
         for month, crime, count in data:
-            if count != 0:
-                month = month.strftime("%Y-%-m-%-d")
-                if month not in formatted_data:
-                    formatted_data[month] = {}
-                formatted_data[month][crime] = count
-        line_data = [{"name": date_, **data} for date_, data in formatted_data.items()]
+            crime_names.add(crime)
+            month = month.strftime("%Y-%-m-%-d")
+            if month not in formatted_data:
+                formatted_data[month] = {}
+            formatted_data[month][crime] = count
+        line_data = []
+        for date_ in formatted_data:
+            dct = {"name": date_}
+            for crime_name in crime_names:
+                dct.update({crime_name: formatted_data[date_].get(crime_name, 0)})
+            line_data.append(dct)
+            
     crime_data = {}
     if line_data:
         crime_data.update({"crime_line_data": line_data})
@@ -225,14 +231,21 @@ async def get_crime_data_agency_line(json_data):
 
     if data:
         formatted_data = {}
-        line_data = []
+        crime_names = set()
         for month, crime, count in data:
-            if count != 0:
-                month = month.strftime("%Y-%-m-%-d")
-                if month not in formatted_data:
-                    formatted_data[month] = {}
-                formatted_data[month][crime] = count
-        line_data = [{"name": date_, **data} for date_, data in formatted_data.items()]
+            crime_names.add(crime)
+            month = month.strftime("%Y-%-m-%-d")
+            if month not in formatted_data:
+                formatted_data[month] = {}
+            formatted_data[month][crime] = count
+        
+        line_data = []
+        for date_ in formatted_data:
+            dct = {"name": date_}
+            for crime_name in crime_names:
+                dct.update({crime_name: formatted_data[date_].get(crime_name, 0)})
+            line_data.append(dct)
+
     crime_data = {}
     if line_data:
         crime_data.update({"agency_wide_line_data": line_data})
