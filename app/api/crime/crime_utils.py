@@ -69,7 +69,7 @@ async def get_crime_data_bar(json_data):
             .group_by(Table.crime_name)
         )
         data = (await sess.execute(query)).all()
-        json_data = {crime_name: count for crime_name, count in data}
+        json_data = {crime_name: count for crime_name, count in data if count != 0}
 
     crime_data = {}
     if json_data:
@@ -108,7 +108,7 @@ async def get_crime_data_line(json_data):
         filters.append(Table.year_month.in_(dates))
         
     data = []
-    formatted_data = []
+    formatted_data = {}
     async with get_session() as sess:
         query = (
             select(
@@ -118,16 +118,22 @@ async def get_crime_data_line(json_data):
             )
             .where(*filters)
             .group_by(Table.year_month, Table.crime_name)
+            .order_by(Table.year_month)
         )
         data = (await sess.execute(query)).all()
-        if data:
-            formatted_data = {}
-            for month, crime, count in data:
-                month = month.strftime("%b-%Y")
+    
+    if data:
+        print("data", data)
+        formatted_data = {}
+        for month, crime, count in data:
+            if count != 0:
+                month = month.strftime("%Y-%-m-%-d")
                 if month not in formatted_data:
                     formatted_data[month] = {}
                 formatted_data[month][crime] = count
-
+        formatted_data = [
+            {"name": date_, **data} for date_, data in formatted_data.items()
+        ]
     crime_data = {}
     if formatted_data:
         crime_data.update({"crime_line_data": formatted_data})
@@ -168,9 +174,10 @@ async def get_crime_data_agency_bar(json_data):
             select(Table.agency_name, func.sum(Table.crime_count).label("total_crime_count"))
             .where(*filters)
             .group_by(Table.agency_name)
+            .order_by("total_crime_count")
         )
         data = (await sess.execute(query)).all()
-        json_data = {agency_name: count for agency_name, count in data}
+        json_data = {agency_name: count for agency_name, count in data if count != 0}
 
     crime_data = {}
     if json_data:
@@ -215,17 +222,21 @@ async def get_crime_data_agency_line(json_data):
             )
             .where(*filters)
             .group_by(Table.year_month, Table.agency_name)
+            .order_by(Table.year_month)
         )
         data = (await sess.execute(query)).all()
 
     if data:
         formatted_data = {}
         for month, crime, count in data:
-            month = month.strftime("%b-%Y")
-            if month not in formatted_data:
-                formatted_data[month] = {}
-            formatted_data[month][crime] = count
-
+            if count != 0:
+                month = month.strftime("%Y-%-m-%-d")
+                if month not in formatted_data:
+                    formatted_data[month] = {}
+                formatted_data[month][crime] = count
+        formatted_data = [
+            {"name": date_, **data} for date_, data in formatted_data.items()
+        ]
     crime_data = {}
     if formatted_data:
         crime_data.update({"agency_wide_line_data": formatted_data})
