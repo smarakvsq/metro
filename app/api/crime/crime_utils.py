@@ -108,7 +108,6 @@ async def get_crime_data_line(json_data):
         filters.append(Table.year_month.in_(dates))
         
     data = []
-    formatted_data = {}
     async with get_session() as sess:
         query = (
             select(
@@ -124,18 +123,19 @@ async def get_crime_data_line(json_data):
     
     if data:
         formatted_data = {}
+        line_data = []
         for month, crime, count in data:
             if count != 0:
                 month = month.strftime("%Y-%-m-%-d")
                 if month not in formatted_data:
                     formatted_data[month] = {}
                 formatted_data[month][crime] = count
-        formatted_data = [
+        line_data = [
             {"name": date_, **data} for date_, data in formatted_data.items()
         ]
     crime_data = {}
-    if formatted_data:
-        crime_data.update({"crime_line_data": formatted_data})
+    if line_data:
+        crime_data.update({"crime_line_data": line_data})
 
     return crime_data
 
@@ -227,18 +227,19 @@ async def get_crime_data_agency_line(json_data):
 
     if data:
         formatted_data = {}
+        line_data = []
         for month, crime, count in data:
             if count != 0:
                 month = month.strftime("%Y-%-m-%-d")
                 if month not in formatted_data:
                     formatted_data[month] = {}
                 formatted_data[month][crime] = count
-        formatted_data = [
+        line_data = [
             {"name": date_, **data} for date_, data in formatted_data.items()
         ]
     crime_data = {}
-    if formatted_data:
-        crime_data.update({"agency_wide_line_data": formatted_data})
+    if line_data:
+        crime_data.update({"agency_wide_line_data": line_data})
 
     return crime_data
 
