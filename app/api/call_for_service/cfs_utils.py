@@ -81,7 +81,7 @@ async def get_call_for_service_line(json_data):
         data = (await sess.execute(query)).all()
 
     line_data = []
-    
+
     if data:
         formatted_data = {}
         for month, call_type, count in data:
@@ -89,9 +89,7 @@ async def get_call_for_service_line(json_data):
             if month not in formatted_data:
                 formatted_data[month] = {}
             formatted_data[month][call_type] = count
-        line_data = [
-            {"name": date_, **data} for date_, data in formatted_data.items()
-        ]
+        line_data = [{"name": date_, **data} for date_, data in formatted_data.items()]
     call_for_service_data = {}
     if line_data:
         call_for_service_data.update({"call_for_service_line_data": line_data})
@@ -172,7 +170,7 @@ async def get_call_for_service_agency_wide_line(json_data):
         )
         data = (await sess.execute(query)).all()
     line_data = []
-    
+
     if data:
         formatted_data = {}
         for month, agency_name, count in data:
@@ -180,9 +178,7 @@ async def get_call_for_service_agency_wide_line(json_data):
             if month not in formatted_data:
                 formatted_data[month] = {}
             formatted_data[month][agency_name] = count
-        line_data = [
-            {"name": date_, **data} for date_, data in formatted_data.items()
-        ]
+        line_data = [{"name": date_, **data} for date_, data in formatted_data.items()]
     call_for_service_data = {}
     if line_data:
         call_for_service_data.update({"call_for_service_agency_wide_line": line_data})

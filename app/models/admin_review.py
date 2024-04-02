@@ -106,7 +106,7 @@ class AdminReview(Base):
             filters.append(AdminReview.transport_type == transport_type)
         else:
             filters.append(AdminReview.transport_type == TransportType.SYSTEM_WIDE)
-        
+
         if sub_section_heading is not None:
             if sub_section_heading:
                 filters.append(AdminReview.sub_section_heading == sub_section_heading)

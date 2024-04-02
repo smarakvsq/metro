@@ -8,10 +8,12 @@ routes = {
         f"{host_url}/crime?transport_type=rail&line_name=A%20Line%20(Blue)&vetted=false&severity=serious_crime"
     ],
     "crime_data": [f"{host_url}/crime/data"],
-    "crime_date": [f"{host_url}/crime/date_details?vetted=false&published=true&transport_type=rail", 
-                   f"{host_url}/crime/date_details?vetted=true&published=true&transport_type=rail", 
-                   f"{host_url}/crime/date_details?vetted=false&published=true", 
-                   f"{host_url}/crime/date_details?vetted=true&published=true",],
+    "crime_date": [
+        f"{host_url}/crime/date_details?vetted=false&published=true&transport_type=rail",
+        f"{host_url}/crime/date_details?vetted=true&published=true&transport_type=rail",
+        f"{host_url}/crime/date_details?vetted=false&published=true",
+        f"{host_url}/crime/date_details?vetted=true&published=true",
+    ],
     "crime_data_agency": [f"{host_url}/crime/data/agency"],
     "routes": [],
     "dashboard": [],

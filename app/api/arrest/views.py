@@ -1,5 +1,12 @@
 from flask import Blueprint, jsonify, request
-from app.api.arrest.arrest_utils import get_arrest_pie, get_arrest_line, get_arrest_agency_wide_bar, get_arrest_agency_wide_line, get_arrest_comment, get_year_months
+from app.api.arrest.arrest_utils import (
+    get_arrest_pie,
+    get_arrest_line,
+    get_arrest_agency_wide_bar,
+    get_arrest_agency_wide_line,
+    get_arrest_comment,
+    get_year_months,
+)
 from app.util import validate_and_get_args, parse_date
 
 arrest_blueprint = Blueprint("arrest", __name__)
@@ -10,14 +17,11 @@ async def arrest_data():
     print("request body", request.json)
     arrest_data = []
     body = request.json
-    graph_mapper = {
-        "pie": get_arrest_pie,
-        "line": get_arrest_line
-    }
+    graph_mapper = {"pie": get_arrest_pie, "line": get_arrest_line}
 
     if not body.get("dates") and not isinstance(body.get("dates"), list):
         return jsonify({"Error": "dates field should be a list."})
-    
+
     body["dates"] = [await parse_date(x) for x in body.get("dates")]
     arrest_data = await graph_mapper[body.get("graph_type")](body)
 
@@ -29,14 +33,11 @@ async def arrest_data_agency():
     print("request body", request.json)
     arrest_data = []
     body = request.json
-    graph_mapper = {
-        "bar": get_arrest_agency_wide_bar,
-        "line": get_arrest_agency_wide_line
-    }
+    graph_mapper = {"bar": get_arrest_agency_wide_bar, "line": get_arrest_agency_wide_line}
 
     if not body.get("dates") and not isinstance(body.get("dates"), list):
         return jsonify({"Error": "dates field should be a list."})
-    
+
     body["dates"] = [await parse_date(x) for x in body.get("dates")]
     arrest_data = await graph_mapper[body.get("graph_type")](body)
 
@@ -49,16 +50,19 @@ async def get_section_comments():
     body = request.json
     if not body.get("dates") and not isinstance(body.get("dates"), list):
         return jsonify({"Error": "dates field should be a list."}), 400
-    
+
     if len(body.get("dates")) != 1:
-        return jsonify(
-            {
-                "comments": "",
-                "message": f"Number of months are {len(body.get('dates'))}. Comments available only for single month selection.",
-            }
-        ), 200
+        return (
+            jsonify(
+                {
+                    "comments": "",
+                    "message": f"Number of months are {len(body.get('dates'))}. Comments available only for single month selection.",
+                }
+            ),
+            200,
+        )
     year_month = await parse_date(body.get("dates")[0])
-    
+
     comment = ""
     try:
         comment = await get_arrest_comment(
@@ -66,7 +70,7 @@ async def get_section_comments():
             transport_type=body.get("transport_type"),
             section_heading=body.get("section"),
             year_month=year_month,
-            published=body.get("published")
+            published=body.get("published"),
         )
     except Exception as exc:
         print(exc)
@@ -78,6 +82,8 @@ async def get_section_comments():
 @arrest_blueprint.route("/arrest/date_details")
 @validate_and_get_args(published=True, transport_type=False)
 async def get_date_details(body):
-    year_months_obj_list = await get_year_months(published=body.get("published"), transport_type=body.get("transport_type"))
+    year_months_obj_list = await get_year_months(
+        published=body.get("published"), transport_type=body.get("transport_type")
+    )
     year_months = [date_obj.strftime("%Y-%-m-%-d") for date_obj in year_months_obj_list]
     return jsonify(year_months), 200

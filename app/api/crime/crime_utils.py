@@ -120,7 +120,7 @@ async def get_crime_data_line(json_data):
             .order_by(Table.year_month)
         )
         data = (await sess.execute(query)).all()
-    
+
     if data:
         formatted_data = {}
         line_data = []
@@ -130,9 +130,7 @@ async def get_crime_data_line(json_data):
                 if month not in formatted_data:
                     formatted_data[month] = {}
                 formatted_data[month][crime] = count
-        line_data = [
-            {"name": date_, **data} for date_, data in formatted_data.items()
-        ]
+        line_data = [{"name": date_, **data} for date_, data in formatted_data.items()]
     crime_data = {}
     if line_data:
         crime_data.update({"crime_line_data": line_data})
@@ -234,9 +232,7 @@ async def get_crime_data_agency_line(json_data):
                 if month not in formatted_data:
                     formatted_data[month] = {}
                 formatted_data[month][crime] = count
-        line_data = [
-            {"name": date_, **data} for date_, data in formatted_data.items()
-        ]
+        line_data = [{"name": date_, **data} for date_, data in formatted_data.items()]
     crime_data = {}
     if line_data:
         crime_data.update({"agency_wide_line_data": line_data})

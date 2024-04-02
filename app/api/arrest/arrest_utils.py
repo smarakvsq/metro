@@ -13,10 +13,7 @@ async def get_arrest_pie(json_data):
     dates = json_data.get("dates")
     published = json_data.get("published")
 
-    filters = [
-        Arrest.published == published,
-        Arrest.gender == gender
-    ]
+    filters = [Arrest.published == published, Arrest.gender == gender]
 
     if line_name:
         filters.append(Arrest.line_name == line_name)
@@ -55,10 +52,7 @@ async def get_arrest_line(json_data):
     dates = json_data.get("dates")
     published = json_data.get("published")
 
-    filters = [
-        Arrest.published == published,
-        Arrest.gender == gender
-    ]
+    filters = [Arrest.published == published, Arrest.gender == gender]
 
     if line_name:
         filters.append(Arrest.line_name == line_name)
@@ -74,7 +68,8 @@ async def get_arrest_line(json_data):
     async with get_session() as sess:
         query = (
             select(
-                Arrest.year_month, Arrest.ethinicity,
+                Arrest.year_month,
+                Arrest.ethinicity,
                 func.sum(Arrest.arrest_count).label("total_arrest_count"),
             )
             .where(*filters)
@@ -82,7 +77,7 @@ async def get_arrest_line(json_data):
             .order_by(Arrest.year_month)
         )
         data = (await sess.execute(query)).all()
-    
+
     line_data = []
 
     if data:
@@ -93,9 +88,7 @@ async def get_arrest_line(json_data):
                 if month not in formatted_data:
                     formatted_data[month] = {}
                 formatted_data[month][ethinicity] = count
-        line_data = [
-            {"name": date_, **data} for date_, data in formatted_data.items()
-        ]
+        line_data = [{"name": date_, **data} for date_, data in formatted_data.items()]
     arrest_data = {}
     if line_data:
         arrest_data.update({"arrest_line_data": line_data})
@@ -109,10 +102,7 @@ async def get_arrest_agency_wide_bar(json_data):
     dates = json_data.get("dates")
     published = json_data.get("published")
 
-    filters = [
-        Arrest.published == published,
-        Arrest.gender == gender
-    ]
+    filters = [Arrest.published == published, Arrest.gender == gender]
 
     if line_name:
         filters.append(Arrest.line_name == line_name)
@@ -151,10 +141,7 @@ async def get_arrest_agency_wide_line(json_data):
     dates = json_data.get("dates")
     published = json_data.get("published")
 
-    filters = [
-        Arrest.published == published,
-        Arrest.gender == gender
-    ]
+    filters = [Arrest.published == published, Arrest.gender == gender]
 
     if line_name:
         filters.append(Arrest.line_name == line_name)
@@ -170,7 +157,8 @@ async def get_arrest_agency_wide_line(json_data):
     async with get_session() as sess:
         query = (
             select(
-                Arrest.year_month, Arrest.agency_name,
+                Arrest.year_month,
+                Arrest.agency_name,
                 func.sum(Arrest.arrest_count).label("total_arrest_count"),
             )
             .where(*filters)
@@ -189,21 +177,16 @@ async def get_arrest_agency_wide_line(json_data):
                 if month not in formatted_data:
                     formatted_data[month] = {}
                 formatted_data[month][agency_name] = count
-        line_data = [
-            {"name": date_, **data} for date_, data in formatted_data.items()
-        ]
+        line_data = [{"name": date_, **data} for date_, data in formatted_data.items()]
 
     arrest_data = {}
     if line_data:
         arrest_data.update({"arrest_agency_wide_line": line_data})
     return arrest_data
 
+
 async def get_arrest_comment(
-    line_name: str,
-    transport_type: str,
-    section_heading: str,
-    year_month,
-    published: bool
+    line_name: str, transport_type: str, section_heading: str, year_month, published: bool
 ):
     comment = ""
 
@@ -230,6 +213,8 @@ async def get_year_months(published: bool, transport_type: str):
         filters.append(Arrest.transport_type == transport_type)
 
     async with get_session() as sess:
-        query = select(Arrest.year_month).where(*filters).distinct().order_by(Arrest.year_month.desc())
+        query = (
+            select(Arrest.year_month).where(*filters).distinct().order_by(Arrest.year_month.desc())
+        )
         data = (await sess.scalars(query)).all()
     return data
