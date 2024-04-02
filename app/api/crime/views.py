@@ -100,10 +100,6 @@ async def get_section_comments():
 @crime_blueprint.route("/crime/date_details")
 @validate_and_get_args(vetted=True, published=True, transport_type=False)
 async def get_date_details(body):
-    year_months_obj_list = await get_year_months(
-        vetted=body.get("vetted"),
-        published=body.get("published"),
-        transport_type=body.get("transport_type"),
-    )
+    year_months_obj_list = await get_year_months(vetted=body.get("vetted"), published=body.get("published"), transport_type=body.get("transport_type"))
     year_months = [date_obj.strftime("%Y-%-m-%-d") for date_obj in year_months_obj_list]
     return jsonify(year_months), 200
