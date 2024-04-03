@@ -1,8 +1,10 @@
-from contextlib import asynccontextmanager
-from app.config import Settings
-from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
-from sqlalchemy.orm import sessionmaker, declarative_base
 import threading
+from contextlib import asynccontextmanager
+
+from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
+from sqlalchemy.orm import declarative_base, sessionmaker
+
+from app.config import Settings
 
 settings = Settings()
 

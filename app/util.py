@@ -1,8 +1,9 @@
 from datetime import datetime
-from flask import request, jsonify
 from functools import wraps
-from app.models import CrimeVetted, CrimeUnvetted
 
+from flask import jsonify, request
+
+from app.models import CrimeUnvetted, CrimeVetted
 
 mapper = {"true": True, "True": True, "false": False, "False": False}
 
@@ -67,3 +68,21 @@ async def parse_date(date_string):
 
 async def select_crime_table(vetted: bool):
     return CrimeVetted if vetted else CrimeUnvetted
+
+
+async def format_line_data(data: dict) -> dict:
+    formatted_data = {}
+    category_names = set()
+    for month, category, count in data:
+        category_names.add(category)
+        month = month.strftime("%Y-%-m-%-d")
+        if month not in formatted_data:
+            formatted_data[month] = {}
+        formatted_data[month][category] = count
+    line_data = []
+    for date_ in formatted_data:
+        dct = {"name": date_}
+        for category in category_names:
+            dct.update({category: formatted_data[date_].get(category, 0)})
+        line_data.append(dct)
+    return line_data

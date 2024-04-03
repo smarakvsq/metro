@@ -1,12 +1,8 @@
 from flask import Flask
 from flask_migrate import Migrate
-from app.api import (
-    dashboard_blueprint,
-    route_blueprint,
-    crime_blueprint,
-    arrest_blueprint,
-    cfs_blueprint,
-)
+
+from app.api import (arrest_blueprint, cfs_blueprint, crime_blueprint,
+                     dashboard_blueprint, route_blueprint)
 from app.middleware import cors
 
 

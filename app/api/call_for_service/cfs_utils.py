@@ -4,6 +4,7 @@ from app.constants import PageType
 from app.db import get_session
 from app.models.admin_review import AdminReview
 from app.models.call_for_service import CallForService
+from app.util import format_line_data
 
 
 async def get_call_for_service_bar(json_data):
@@ -83,13 +84,8 @@ async def get_call_for_service_line(json_data):
     line_data = []
 
     if data:
-        formatted_data = {}
-        for month, call_type, count in data:
-            month = month.strftime("%Y-%-m-%-d")
-            if month not in formatted_data:
-                formatted_data[month] = {}
-            formatted_data[month][call_type] = count
-        line_data = [{"name": date_, **data} for date_, data in formatted_data.items()]
+        line_data = await format_line_data(data=data)
+
     call_for_service_data = {}
     if line_data:
         call_for_service_data.update({"call_for_service_line_data": line_data})
@@ -172,13 +168,9 @@ async def get_call_for_service_agency_wide_line(json_data):
     line_data = []
 
     if data:
-        formatted_data = {}
-        for month, agency_name, count in data:
-            month = month.strftime("%Y-%-m-%-d")
-            if month not in formatted_data:
-                formatted_data[month] = {}
-            formatted_data[month][agency_name] = count
-        line_data = [{"name": date_, **data} for date_, data in formatted_data.items()]
+        line_data = await format_line_data(data=data)
+
+        
     call_for_service_data = {}
     if line_data:
         call_for_service_data.update({"call_for_service_agency_wide_line": line_data})

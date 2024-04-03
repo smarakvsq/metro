@@ -1,6 +1,7 @@
-from flask import Flask, request, make_response
-from functools import wraps
 from datetime import timedelta
+from functools import wraps
+
+from flask import Flask, make_response, request
 
 
 def cors(app):

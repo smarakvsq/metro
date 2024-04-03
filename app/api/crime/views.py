@@ -1,14 +1,11 @@
 from flask import Blueprint, jsonify, request
-from app.util import validate_and_get_args, parse_date
-from app.api.crime.crime_utils import (
-    get_unique_ucr,
-    get_crime_data_bar,
-    get_crime_data_line,
-    get_crime_data_agency_bar,
-    get_crime_data_agency_line,
-    get_crime_comment,
-    get_year_months,
-)
+
+from app.api.crime.crime_utils import (get_crime_comment,
+                                       get_crime_data_agency_bar,
+                                       get_crime_data_agency_line,
+                                       get_crime_data_bar, get_crime_data_line,
+                                       get_unique_ucr, get_year_months)
+from app.util import parse_date, validate_and_get_args
 
 crime_blueprint = Blueprint("crime", __name__)
 

@@ -1,5 +1,6 @@
-import aiohttp
 import asyncio
+
+import aiohttp
 
 host_url = "http://localhost:5000"
 
@@ -11,8 +12,16 @@ routes = {
     "crime_date": [
         f"{host_url}/crime/date_details?vetted=false&published=true&transport_type=rail",
         f"{host_url}/crime/date_details?vetted=true&published=true&transport_type=rail",
+        f"{host_url}/crime/date_details?vetted=false&published=false&transport_type=rail",
+        f"{host_url}/crime/date_details?vetted=true&published=false&transport_type=rail",
+        f"{host_url}/crime/date_details?vetted=false&published=true&transport_type=bus",
+        f"{host_url}/crime/date_details?vetted=true&published=true&transport_type=bus",
+        f"{host_url}/crime/date_details?vetted=false&published=false&transport_type=bus",
+        f"{host_url}/crime/date_details?vetted=true&published=false&transport_type=bus",
         f"{host_url}/crime/date_details?vetted=false&published=true",
+        f"{host_url}/crime/date_details?vetted=false&published=false",
         f"{host_url}/crime/date_details?vetted=true&published=true",
+        f"{host_url}/crime/date_details?vetted=true&published=false",
     ],
     "crime_data_agency": [f"{host_url}/crime/data/agency"],
     "routes": [],
@@ -188,7 +197,7 @@ async def test_async_api(method, url, params=None, data=None, headers=None):
             except aiohttp.ContentTypeError:
                 response_data = await response.text()
 
-            print({"status_code": response.status, "response": response_data})
+            print({"url": url, "status_code": response.status, "response": response_data})
             return {"status_code": response.status, "response": response_data}
 
 
@@ -204,9 +213,19 @@ async def main(get_url=None, post_url=None, json_data=None):
     await asyncio.gather(*tasks, return_exceptions=True)
 
 
+async def run_multiple_get(url_list):
+    # GET request
+    tasks = []
+    for url in url_list:
+        tasks.append(test_async_api("GET", url))
+    await asyncio.gather(*tasks, return_exceptions=True)
+
+
 if __name__ == "__main__":
 
     post_url = routes["cfs_agency_data"][0]
     asyncio.run(main(post_url=post_url, json_data=cfs_agency_line))
 
-    # asyncio.run(main(get_url=routes["cfs_date"][1]))
+    # asyncio.run(main(get_url=routes["crime_date"][1]))
+    # asyncio.run(run_multiple_get(routes["crime_date"]))
+    
