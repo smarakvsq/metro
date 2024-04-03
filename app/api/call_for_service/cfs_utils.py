@@ -170,7 +170,6 @@ async def get_call_for_service_agency_wide_line(json_data):
     if data:
         line_data = await format_line_data(data=data)
 
-        
     call_for_service_data = {}
     if line_data:
         call_for_service_data.update({"call_for_service_agency_wide_line": line_data})

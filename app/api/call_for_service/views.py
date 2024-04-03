@@ -2,8 +2,12 @@ from flask import Blueprint, jsonify, request
 
 from app.api.call_for_service.cfs_utils import (
     get_call_for_service_agency_wide_bar,
-    get_call_for_service_agency_wide_line, get_call_for_service_bar,
-    get_call_for_service_comment, get_call_for_service_line, get_year_months)
+    get_call_for_service_agency_wide_line,
+    get_call_for_service_bar,
+    get_call_for_service_comment,
+    get_call_for_service_line,
+    get_year_months,
+)
 from app.util import parse_date, validate_and_get_args
 
 cfs_blueprint = Blueprint("call_for_service", __name__)

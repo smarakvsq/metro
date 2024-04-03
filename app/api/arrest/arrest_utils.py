@@ -83,7 +83,7 @@ async def get_arrest_line(json_data):
 
     if data:
         line_data = await format_line_data(data=data)
-        
+
     arrest_data = {}
     if line_data:
         arrest_data.update({"arrest_line_data": line_data})

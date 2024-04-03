@@ -228,4 +228,3 @@ if __name__ == "__main__":
 
     # asyncio.run(main(get_url=routes["crime_date"][1]))
     # asyncio.run(run_multiple_get(routes["crime_date"]))
-    
