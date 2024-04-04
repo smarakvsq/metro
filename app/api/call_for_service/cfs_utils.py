@@ -43,8 +43,7 @@ async def get_call_for_service_bar(json_data):
         formatted_data = {call_type: count for call_type, count in data if count != 0}
 
     call_for_service_data = {}
-    if formatted_data:
-        call_for_service_data.update({"call_for_service_bar_data": formatted_data})
+    call_for_service_data.update({"call_for_service_bar_data": formatted_data})
     return call_for_service_data
 
 
@@ -89,8 +88,7 @@ async def get_call_for_service_line(json_data):
         line_data = await format_line_data(data=data)
 
     call_for_service_data = {}
-    if line_data:
-        call_for_service_data.update({"call_for_service_line_data": line_data})
+    call_for_service_data.update({"call_for_service_line_data": line_data})
     return call_for_service_data
 
 
@@ -130,8 +128,7 @@ async def get_call_for_service_agency_wide_bar(json_data):
         formatted_data = {agency_name: count for agency_name, count in data if count != 0}
 
     call_for_service_data = {}
-    if formatted_data:
-        call_for_service_data.update({"call_for_service_agency_wide_bar": formatted_data})
+    call_for_service_data.update({"call_for_service_agency_wide_bar": formatted_data})
     return call_for_service_data
 
 
@@ -175,8 +172,7 @@ async def get_call_for_service_agency_wide_line(json_data):
         line_data = await format_line_data(data=data)
 
     call_for_service_data = {}
-    if line_data:
-        call_for_service_data.update({"call_for_service_agency_wide_line": line_data})
+    call_for_service_data.update({"call_for_service_agency_wide_line": line_data})
     return call_for_service_data
 
 

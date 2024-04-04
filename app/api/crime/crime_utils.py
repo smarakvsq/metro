@@ -71,8 +71,7 @@ async def get_crime_data_bar(json_data):
         json_data = {crime_name: count for crime_name, count in data if count != 0}
 
     crime_data = {}
-    if json_data:
-        crime_data.update({"crime_bar_data": json_data})
+    crime_data.update({"crime_bar_data": json_data})
     return crime_data
 
 
@@ -126,8 +125,7 @@ async def get_crime_data_line(json_data):
         line_data = await format_line_data(data=data)
 
     crime_data = {}
-    if line_data:
-        crime_data.update({"crime_line_data": line_data})
+    crime_data.update({"crime_line_data": line_data})
 
     return crime_data
 
@@ -172,8 +170,7 @@ async def get_crime_data_agency_bar(json_data):
         json_data = {agency_name: count for agency_name, count in data if count != 0}
 
     crime_data = {}
-    if json_data:
-        crime_data.update({"agency_wide_bar_data": json_data})
+    crime_data.update({"agency_wide_bar_data": json_data})
 
     return crime_data
 
@@ -224,8 +221,7 @@ async def get_crime_data_agency_line(json_data):
         line_data = await format_line_data(data=data)
 
     crime_data = {}
-    if line_data:
-        crime_data.update({"agency_wide_line_data": line_data})
+    crime_data.update({"agency_wide_line_data": line_data})
 
     return crime_data
 
@@ -256,49 +252,6 @@ async def get_crime_comment(
         print(exc)
 
     return comment or ""
-
-
-async def get_year_months_for_comment(json_data: dict):
-    line_name = json_data.get("line_name")
-    transport_type = json_data.get("transport_type")
-    from_date = json_data.get("from_date")
-    to_date = json_data.get("to_date")
-    severity = json_data.get("section")
-    ucr = json_data.get("crime_category")
-    vetted = json_data.get("vetted")
-    published = json_data.get("published")
-
-    Table = await select_crime_table(vetted)
-
-    filters = [
-        Table.published == published,
-    ]
-    if severity in severity_mapper.keys():
-        filters.append(Table.severity == severity_mapper[severity])
-
-    if ucr:
-        filters.append(Table.ucr == ucr)
-
-    if line_name:
-        filters.append(Table.line_name == line_name)
-
-    if transport_type:
-        filters.append(Table.transport_type == transport_type)
-
-    if from_date and to_date:
-        filters.append(
-            and_(
-                Table.year_month >= from_date,
-                Table.year_month < to_date,
-            )
-        )
-
-    data = []
-    async with get_session() as sess:
-        query = select(Table.year_month).where(*filters).distinct()
-        data = (await sess.scalars(query)).all()
-    return data
-
 
 async def get_year_months(vetted: bool, published: bool, transport_type: str):
     data = []

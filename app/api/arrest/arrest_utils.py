@@ -42,8 +42,7 @@ async def get_arrest_pie(json_data):
         formatted_data = {ethinicity: count for ethinicity, count in data if count != 0}
 
     arrest_data = {}
-    if formatted_data:
-        arrest_data.update({"arrest_pie_data": formatted_data})
+    arrest_data.update({"arrest_pie_data": formatted_data})
     return arrest_data
 
 
@@ -87,8 +86,7 @@ async def get_arrest_line(json_data):
         line_data = await format_line_data(data=data)
 
     arrest_data = {}
-    if line_data:
-        arrest_data.update({"arrest_line_data": line_data})
+    arrest_data.update({"arrest_line_data": line_data})
     return arrest_data
 
 
@@ -127,8 +125,7 @@ async def get_arrest_agency_wide_bar(json_data):
         formatted_data = {agency_name: count for agency_name, count in data if count != 0}
 
     arrest_data = {}
-    if formatted_data:
-        arrest_data.update({"arrest_agency_wide_bar": formatted_data})
+    arrest_data.update({"arrest_agency_wide_bar": formatted_data})
     return arrest_data
 
 
@@ -172,8 +169,7 @@ async def get_arrest_agency_wide_line(json_data):
         line_data = await format_line_data(data=data)
 
     arrest_data = {}
-    if line_data:
-        arrest_data.update({"arrest_agency_wide_line": line_data})
+    arrest_data.update({"arrest_agency_wide_line": line_data})
     return arrest_data
 
 
