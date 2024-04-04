@@ -67,7 +67,7 @@ crime_agency_bar = {
     "dates": ["2024-01-01", "2023-12-1", "2023-10-1"],
     "transport_type": "rail",
     "crime_category": "persons",
-    "vetted": True,
+    "vetted": False,
     "published": True,
     "graph_type": "bar",
 }
@@ -223,8 +223,8 @@ async def run_multiple_get(url_list):
 
 if __name__ == "__main__":
 
-    post_url = routes["cfs_agency_data"][0]
-    asyncio.run(main(post_url=post_url, json_data=cfs_agency_line))
+    post_url = routes["crime_data_agency"][0]
+    asyncio.run(main(post_url=post_url, json_data=crime_agency_bar))
 
     # asyncio.run(main(get_url=routes["crime_date"][1]))
     # asyncio.run(run_multiple_get(routes["crime_date"]))

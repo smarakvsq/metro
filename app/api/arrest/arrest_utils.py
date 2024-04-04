@@ -35,6 +35,7 @@ async def get_arrest_pie(json_data):
                 func.sum(Arrest.arrest_count).label("total_arrest_count"),
             )
             .where(*filters)
+            .where(Arrest.ethinicity != None)
             .group_by(Arrest.ethinicity)
         )
         data = (await sess.execute(query)).all()
@@ -74,6 +75,7 @@ async def get_arrest_line(json_data):
                 func.sum(Arrest.arrest_count).label("total_arrest_count"),
             )
             .where(*filters)
+            .where(Arrest.ethinicity != None)
             .group_by(Arrest.year_month, Arrest.ethinicity)
             .order_by(Arrest.year_month)
         )
@@ -118,6 +120,7 @@ async def get_arrest_agency_wide_bar(json_data):
                 func.sum(Arrest.arrest_count).label("total_arrest_count"),
             )
             .where(*filters)
+            .where(Arrest.agency_name != None)
             .group_by(Arrest.agency_name)
         )
         data = (await sess.execute(query)).all()
@@ -157,6 +160,7 @@ async def get_arrest_agency_wide_line(json_data):
                 func.sum(Arrest.arrest_count).label("total_arrest_count"),
             )
             .where(*filters)
+            .where(Arrest.agency_name != None)
             .group_by(Arrest.year_month, Arrest.agency_name)
             .order_by(Arrest.year_month)
         )

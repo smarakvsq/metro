@@ -64,6 +64,7 @@ async def get_crime_data_bar(json_data):
         query = (
             select(Table.crime_name, func.sum(Table.crime_count).label("total_crime_count"))
             .where(*filters)
+            .where(Table.crime_name != None)
             .group_by(Table.crime_name)
         )
         data = (await sess.execute(query)).all()
@@ -114,6 +115,7 @@ async def get_crime_data_line(json_data):
                 func.sum(Table.crime_count).label("total_crime_count"),
             )
             .where(*filters)
+            .where(Table.crime_name != None)
             .group_by(Table.year_month, Table.crime_name)
             .order_by(Table.year_month)
         )
@@ -162,6 +164,7 @@ async def get_crime_data_agency_bar(json_data):
         query = (
             select(Table.agency_name, func.sum(Table.crime_count).label("total_crime_count"))
             .where(*filters)
+            .where(Table.agency_name != None)
             .group_by(Table.agency_name)
             .order_by("total_crime_count")
         )
@@ -211,6 +214,7 @@ async def get_crime_data_agency_line(json_data):
                 func.sum(Table.crime_count).label("total_crime_count"),
             )
             .where(*filters)
+            .where(Table.agency_name != None)
             .group_by(Table.year_month, Table.agency_name)
             .order_by(Table.year_month)
         )

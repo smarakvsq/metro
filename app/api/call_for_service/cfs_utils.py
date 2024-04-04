@@ -36,6 +36,7 @@ async def get_call_for_service_bar(json_data):
                 func.sum(CallForService.calls_count).label("total_call_count"),
             )
             .where(*filters)
+            .where(CallForService.call_type != None)
             .group_by(CallForService.call_type)
         )
         data = (await sess.execute(query)).all()
@@ -76,6 +77,7 @@ async def get_call_for_service_line(json_data):
                 func.sum(CallForService.calls_count).label("total_call_count"),
             )
             .where(*filters)
+            .where(CallForService.call_type != None)
             .group_by(CallForService.year_month, CallForService.call_type)
             .order_by(CallForService.year_month)
         )
@@ -121,6 +123,7 @@ async def get_call_for_service_agency_wide_bar(json_data):
                 func.sum(CallForService.calls_count).label("total_call_count"),
             )
             .where(*filters)
+            .where(CallForService.agency_name != None)
             .group_by(CallForService.agency_name)
         )
         data = (await sess.execute(query)).all()
@@ -161,6 +164,7 @@ async def get_call_for_service_agency_wide_line(json_data):
                 func.sum(CallForService.calls_count).label("total_call_count"),
             )
             .where(*filters)
+            .where(CallForService.agency_name != None)
             .group_by(CallForService.year_month, CallForService.agency_name)
             .order_by(CallForService.year_month)
         )
