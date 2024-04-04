@@ -15,14 +15,13 @@ crime_blueprint = Blueprint("crime", __name__)
 
 
 @crime_blueprint.route("/crime")
-@validate_and_get_args(line_name=False, transport_type=False, vetted=True, severity=False)
+@validate_and_get_args(line_name=False, transport_type=False, vetted=True)
 async def get_crime_category(body):
     print("request body", body)
     data = await get_unique_ucr(
         line_name=body.get("line_name"),
         transport_type=body.get("transport_type"),
         vetted=body.get("vetted"),
-        severity=body.get("severity"),
     )
     return jsonify(data), 200
 

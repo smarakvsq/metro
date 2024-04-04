@@ -11,21 +11,32 @@ severity_mapper = {
 }
 
 
-async def get_unique_ucr(line_name: str, vetted: bool, transport_type: str, severity: str):
+async def get_unique_ucr(line_name: str, vetted: bool, transport_type: str):
     data = []
     Table = await select_crime_table(vetted)
     filters = [Table.transport_type == transport_type]
-
-    if severity in severity_mapper.keys():
-        filters.append(Table.severity == severity_mapper[severity])
 
     if line_name:
         filters.append(Table.line_name == line_name)
 
     async with get_session() as sess:
-        data = (await sess.scalars(select(Table.ucr).where(*filters).distinct())).all()
+        query = select(Table.severity, Table.ucr).where(*filters).group_by(Table.ucr, Table.severity).distinct()
+        data = (await sess.execute(query)).all()
+    
 
-    return data
+    severity_ucr_dict = {}
+    if data:
+        for part, ucr in data:
+            if part in severity_ucr_dict:
+                severity_ucr_dict[part].append(ucr)
+            else:
+                severity_ucr_dict[part] = [ucr]
+        
+        for sev, part in severity_mapper.items():
+            severity_ucr_dict[sev] = list(set(severity_ucr_dict.pop(part)))
+
+
+    return severity_ucr_dict
 
 
 async def get_crime_data_bar(json_data):

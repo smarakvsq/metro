@@ -1,5 +1,4 @@
 from flask import Flask
-from flask_migrate import Migrate
 
 from app.api import (
     arrest_blueprint,
@@ -31,7 +30,3 @@ def register_blueprints(app):
     app.register_blueprint(arrest_blueprint)
     app.register_blueprint(cfs_blueprint)
 
-
-# def app_setup(app):
-# migrate = Migrate()
-# migrate.init_app(app, engine)

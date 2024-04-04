@@ -6,7 +6,8 @@ host_url = "http://localhost:5000"
 
 routes = {
     "crime_ucr": [
-        f"{host_url}/crime?transport_type=rail&line_name=A%20Line%20(Blue)&vetted=false&severity=serious_crime"
+        f"{host_url}/crime?transport_type=rail&line_name=A%20Line%20(Blue)&vetted=false&",
+        f"{host_url}/crime?transport_type=rail&line_name=A%20Line%20(Blue)&vetted=true&",
     ],
     "crime_data": [f"{host_url}/crime/data"],
     "crime_date": [
@@ -224,7 +225,7 @@ async def run_multiple_get(url_list):
 if __name__ == "__main__":
 
     post_url = routes["crime_data_agency"][0]
-    asyncio.run(main(post_url=post_url, json_data=crime_agency_bar))
+    # asyncio.run(main(post_url=post_url, json_data=crime_agency_bar))
 
-    # asyncio.run(main(get_url=routes["crime_date"][1]))
+    asyncio.run(main(get_url=routes["crime_ucr"][0]))
     # asyncio.run(run_multiple_get(routes["crime_date"]))
