@@ -1,9 +1,10 @@
+from flask import jsonify
 from sqlalchemy import select
+
+from app.constants import PageType
 from app.db import get_session
 from app.models import Arrest, CallForService
 from app.util import select_crime_table
-from app.constants import PageType
-from flask import jsonify
 
 
 async def select_stat_table(stat_type: str, vetted: bool):

@@ -1,6 +1,7 @@
-from sqlalchemy import Column, Integer, Date, String, Boolean, select
-from app.db import Base, get_session
+from sqlalchemy import Boolean, Column, Date, Integer, String, select
+
 from app.constants import PageType, TransportType
+from app.db import Base, get_session
 
 
 class AdminReview(Base):

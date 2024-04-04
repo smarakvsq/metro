@@ -1,11 +1,9 @@
-from datetime import date
-
 from sqlalchemy import and_, func, select
 
-from app.constants import CrimeSectionHeading, PageType, TransportType
+from app.constants import CrimeSectionHeading, PageType
 from app.db import get_session
 from app.models.admin_review import AdminReview
-from app.util import select_crime_table
+from app.util import format_line_data, select_crime_table
 
 severity_mapper = {
     CrimeSectionHeading.SERIOUS_CRIME: "part_2",
@@ -121,22 +119,10 @@ async def get_crime_data_line(json_data):
         )
         data = (await sess.execute(query)).all()
 
+    line_data = []
     if data:
-        formatted_data = {}
-        crime_names = set()
-        for month, crime, count in data:
-            crime_names.add(crime)
-            month = month.strftime("%Y-%-m-%-d")
-            if month not in formatted_data:
-                formatted_data[month] = {}
-            formatted_data[month][crime] = count
-        line_data = []
-        for date_ in formatted_data:
-            dct = {"name": date_}
-            for crime_name in crime_names:
-                dct.update({crime_name: formatted_data[date_].get(crime_name, 0)})
-            line_data.append(dct)
-            
+        line_data = await format_line_data(data=data)
+
     crime_data = {}
     if line_data:
         crime_data.update({"crime_line_data": line_data})
@@ -216,6 +202,7 @@ async def get_crime_data_agency_line(json_data):
         filters.append(Table.year_month.in_(dates))
 
     data = []
+    line_data = []
     async with get_session() as sess:
         query = (
             select(
@@ -230,21 +217,7 @@ async def get_crime_data_agency_line(json_data):
         data = (await sess.execute(query)).all()
 
     if data:
-        formatted_data = {}
-        crime_names = set()
-        for month, crime, count in data:
-            crime_names.add(crime)
-            month = month.strftime("%Y-%-m-%-d")
-            if month not in formatted_data:
-                formatted_data[month] = {}
-            formatted_data[month][crime] = count
-        
-        line_data = []
-        for date_ in formatted_data:
-            dct = {"name": date_}
-            for crime_name in crime_names:
-                dct.update({crime_name: formatted_data[date_].get(crime_name, 0)})
-            line_data.append(dct)
+        line_data = await format_line_data(data=data)
 
     crime_data = {}
     if line_data:

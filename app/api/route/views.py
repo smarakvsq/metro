@@ -1,6 +1,7 @@
-from flask import Blueprint, request, jsonify
-from app.util import validate_and_get_args
+from flask import Blueprint, jsonify, request
+
 from app.api.route.route_utils import get_unique_lines
+from app.util import validate_and_get_args
 
 route_blueprint = Blueprint("route", __name__)
 

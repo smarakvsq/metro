@@ -1,10 +1,11 @@
-from flask import Blueprint, request, jsonify
-from app.util import validate_and_get_args
+from flask import Blueprint, jsonify, request
+
 from app.api.dashboard.prepare_dashboard_data import (
     get_arrest_data,
     get_call_for_service_data,
     get_crime_data,
 )
+from app.util import validate_and_get_args
 
 dashboard_blueprint = Blueprint("dashboard", __name__)
 
