@@ -73,16 +73,19 @@ async def select_crime_table(vetted: bool):
 async def format_line_data(data: dict) -> dict:
     formatted_data = {}
     category_names = set()
+    counter = 0
     for month, category, count in data:
+        counter += count
         category_names.add(category)
         month = month.strftime("%Y-%-m-%-d")
         if month not in formatted_data:
             formatted_data[month] = {}
         formatted_data[month][category] = count
     line_data = []
-    for date_ in formatted_data:
-        dct = {"name": date_}
-        for category in category_names:
-            dct.update({category: formatted_data[date_].get(category, 0)})
-        line_data.append(dct)
+    if counter != 0:
+        for date_ in formatted_data:
+            dct = {"name": date_}
+            for category in category_names:
+                dct.update({category: formatted_data[date_].get(category, 0)})
+            line_data.append(dct)
     return line_data

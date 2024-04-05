@@ -17,7 +17,7 @@ class Vet:
 
 class CrimeSectionHeading:
     SERIOUS_CRIME = "serious_crime"
-    GENERAL_CRIME = "general_crime"
+    systemwide_crime = "systemwide_crime"
     AGENCY_WIDE = "agency_wide"
 
 
@@ -31,3 +31,12 @@ class GraphType:
 class Gender:
     MALE = "male"
     FEMALE = "female"
+
+
+class CrimeSeverity:
+    VIOLENT_CRIME = "violent_crime"
+    SYSTEM_WIDE_CRIME = "systemwide_crime"
+
+
+class Ucr:
+    PERSONS = "persons"

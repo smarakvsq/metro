@@ -40,6 +40,7 @@ async def get_arrest_pie(json_data):
         )
         data = (await sess.execute(query)).all()
         formatted_data = {ethinicity: count for ethinicity, count in data if count != 0}
+        formatted_data = dict(sorted(formatted_data.items(), key=lambda x: x[1], reverse=True))
 
     arrest_data = {}
     arrest_data.update({"arrest_pie_data": formatted_data})
@@ -123,6 +124,7 @@ async def get_arrest_agency_wide_bar(json_data):
         )
         data = (await sess.execute(query)).all()
         formatted_data = {agency_name: count for agency_name, count in data if count != 0}
+        formatted_data = dict(sorted(formatted_data.items(), key=lambda x: x[1], reverse=True))
 
     arrest_data = {}
     arrest_data.update({"arrest_agency_wide_bar": formatted_data})

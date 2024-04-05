@@ -1,26 +1,21 @@
-from sqlalchemy import and_, func, select
+from sqlalchemy import func, select
 
-from app.constants import CrimeSectionHeading, PageType
+from app.constants import Ucr, PageType, CrimeSeverity
 from app.db import get_session
 from app.models.admin_review import AdminReview
 from app.util import format_line_data, select_crime_table
 
-severity_mapper = {
-    CrimeSectionHeading.SERIOUS_CRIME: "part_2",
-    CrimeSectionHeading.GENERAL_CRIME: "part_1",
-}
 
-
-async def get_unique_ucr(line_name: str, vetted: bool, transport_type: str, severity: str):
+async def get_unique_ucr(line_name: str, vetted: bool, transport_type: str, severity: str=CrimeSeverity.SYSTEM_WIDE_CRIME):
     data = []
     Table = await select_crime_table(vetted)
     filters = [Table.transport_type == transport_type]
 
-    if severity in severity_mapper.keys():
-        filters.append(Table.severity == severity_mapper[severity])
-
     if line_name:
         filters.append(Table.line_name == line_name)
+
+    if severity == CrimeSeverity.VIOLENT_CRIME:
+        filters.append(Table.ucr == Ucr.PERSONS)
 
     async with get_session() as sess:
         data = (await sess.scalars(select(Table.ucr).where(*filters).distinct())).all()
@@ -43,8 +38,8 @@ async def get_crime_data_bar(json_data):
         Table.published == published,
     ]
 
-    if severity in severity_mapper.keys():
-        filters.append(Table.severity == severity_mapper[severity])
+    if severity and severity == CrimeSeverity.VIOLENT_CRIME:
+        filters.append(Table.ucr == Ucr.PERSONS)
 
     if ucr:
         filters.append(Table.ucr == ucr)
@@ -69,6 +64,8 @@ async def get_crime_data_bar(json_data):
         )
         data = (await sess.execute(query)).all()
         json_data = {crime_name: count for crime_name, count in data if count != 0}
+        print(json_data)
+        json_data = dict(sorted(json_data.items(), key=lambda x: x[1], reverse=True))
 
     crime_data = {}
     crime_data.update({"crime_bar_data": json_data})
@@ -90,8 +87,8 @@ async def get_crime_data_line(json_data):
         Table.published == published,
     ]
 
-    if severity in severity_mapper.keys():
-        filters.append(Table.severity == severity_mapper[severity])
+    if severity and severity == CrimeSeverity.VIOLENT_CRIME:
+        filters.append(Table.ucr == Ucr.PERSONS)
 
     if ucr:
         filters.append(Table.ucr == ucr)
@@ -168,6 +165,7 @@ async def get_crime_data_agency_bar(json_data):
         )
         data = (await sess.execute(query)).all()
         json_data = {agency_name: count for agency_name, count in data if count != 0}
+        json_data = dict(sorted(json_data.items(), key=lambda x: x[1], reverse=True))
 
     crime_data = {}
     crime_data.update({"agency_wide_bar_data": json_data})

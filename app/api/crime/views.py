@@ -9,6 +9,7 @@ from app.api.crime.crime_utils import (
     get_unique_ucr,
     get_year_months,
 )
+from app.constants import CrimeSeverity
 from app.util import parse_date, validate_and_get_args
 
 crime_blueprint = Blueprint("crime", __name__)
@@ -37,7 +38,10 @@ async def crime_data():
         "line": get_crime_data_line,
     }
     if not body.get("dates") and not isinstance(body.get("dates"), list):
-        return jsonify({"Error": "dates field should be a list."})
+        return jsonify({"Error": "dates field should be a list."}), 400
+    
+    if body.get("severity") and body.get("severity") == CrimeSeverity.VIOLENT_CRIME and body.get("crime_category"):
+        return jsonify({"Error": f'Input crime_category and severity {body.get("severity")} are mutually exclusive.'}), 400
 
     body["dates"] = [await parse_date(x) for x in body.get("dates")]
     crime_data = await graph_mapper[body.get("graph_type")](body)

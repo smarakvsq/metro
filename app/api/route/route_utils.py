@@ -9,9 +9,9 @@ from app.util import select_crime_table
 
 async def select_stat_table(stat_type: str, vetted: bool):
     mapper = {
-        "crime": await select_crime_table(vetted=vetted),
-        "arrest": Arrest,
-        "call_for_services": CallForService,
+        PageType.CRIME: await select_crime_table(vetted=vetted),
+        PageType.ARREST: Arrest,
+        PageType.CALLS_FOR_SERVICE: CallForService,
     }
     stat_type = stat_type.lower()
     return mapper[stat_type]

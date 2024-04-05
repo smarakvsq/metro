@@ -15,6 +15,7 @@ def create_app(testing=False):
     """Application factory, used to create application"""
     app = Flask("metro_app")
     cors(app)
+    app.json.sort_keys = False
     # app.config.from_object("app.config")
 
     register_blueprints(app)

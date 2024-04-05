@@ -6,7 +6,9 @@ host_url = "http://localhost:5000"
 
 routes = {
     "crime_ucr": [
-        f"{host_url}/crime?transport_type=rail&line_name=A%20Line%20(Blue)&vetted=false&severity=serious_crime"
+        f"{host_url}/crime?transport_type=rail&line_name=A%20Line%20(Blue)&vetted=true&severity=violent_crime",
+        f"{host_url}/crime?transport_type=rail&line_name=A%20Line%20(Blue)&vetted=true&severity=systemwide_crime",
+        f"{host_url}/crime?transport_type=rail&line_name=A%20Line%20(Blue)&vetted=true",
     ],
     "crime_data": [f"{host_url}/crime/data"],
     "crime_date": [
@@ -24,7 +26,11 @@ routes = {
         f"{host_url}/crime/date_details?vetted=true&published=false",
     ],
     "crime_data_agency": [f"{host_url}/crime/data/agency"],
-    "routes": [],
+    "crime_comment": [f"{host_url}/crime/comment"],
+    "routes": [
+        f"{host_url}/routes/?stat_type=calls_for_service&transport_type=rail",
+        f"{host_url}/routes/?stat_type=arrest&vetted=false&transport_type=rail",
+    ],
     "dashboard": [],
     "arrest_data": [f"{host_url}/arrest/data"],
     "arrest_agency_data": [f"{host_url}/arrest/data/agency"],
@@ -42,32 +48,86 @@ routes = {
     ],
 }
 
-crime_bar = {
-    "line_name": "A Line (Blue)",
-    "dates": ["2024-01-01", "2023-12-1", "2023-10-1"],
+crime_bar = [
+    {
+        "line_name": "A Line (Blue)",
+        "dates": ["2024-01-01", "2023-12-1", "2023-10-1"],
+        "transport_type": "rail",
+        "severity": "systemwide_crime",
+        "crime_category": "persons",
+        "vetted": True,
+        "published": True,
+        "graph_type": "bar",
+    },
+    {
+        "line_name": "A Line (Blue)",
+        "dates": ["2024-01-01", "2023-12-1", "2023-10-1"],
+        "transport_type": "rail",
+        "severity": "violent_crime",
+        "crime_category": "persons",
+        "vetted": True,
+        "published": True,
+        "graph_type": "bar",
+    },
+    {
+        "line_name": "A Line (Blue)",
+        "dates": ["2024-01-01", "2023-12-1", "2023-10-1"],
+        "transport_type": "rail",
+        "severity": "violent_crime",
+        "crime_category": "",
+        "vetted": True,
+        "published": True,
+        "graph_type": "bar",
+    },
+    {
+        "line_name": "A Line (Blue)",
+        "dates": ["2024-01-01", "2023-12-1", "2023-10-1"],
+        "transport_type": "rail",
+        "severity": "violent_crime",
+        "vetted": True,
+        "published": True,
+        "graph_type": "bar",
+    },
+    {
+        "line_name": "A Line (Blue)",
+        "dates": ["2024-01-01", "2023-12-1", "2023-10-1"],
+        "transport_type": "rail",
+        "severity": "systemwide_crime",
+        "crime_category": "",
+        "vetted": True,
+        "published": True,
+        "graph_type": "bar",
+    },
+    {
+        "line_name": "A Line (Blue)",
+        "dates": ["2024-01-01", "2023-12-1", "2023-10-1"],
+        "transport_type": "rail",
+        "severity": "systemwide_crime",
+        "vetted": True,
+        "published": True,
+        "graph_type": "bar",
+    }
+]
+crime_line = {
+    "line_name": "K Line",
+    # "line_name": "A Line (Blue)",
+    "dates": ["2024-01-01"],
+    # "dates": ["2024-01-01", "2023-12-1", "2023-10-1"],
     "transport_type": "rail",
-    "severity": "serious_crime",
+    "severity": "systemwide_crime",
+    # "severity": "violent_crime",
     "crime_category": "persons",
-    "vetted": True,
+    "vetted": False,
     "published": True,
     "graph_type": "bar",
-}
-crime_line = {
-    "line_name": "A Line (Blue)",
-    "dates": ["2024-01-01", "2023-12-1", "2023-10-1"],
-    "transport_type": "rail",
-    "severity": "serious_crime",
-    "crime_category": "persons",
-    "vetted": True,
-    "published": True,
-    "graph_type": "line",
+    # "graph_type": "line",
 }
 crime_agency_bar = {
     "line_name": "A Line (Blue)",
     "dates": ["2024-01-01", "2023-12-1", "2023-10-1"],
     "transport_type": "rail",
     "crime_category": "persons",
-    "vetted": False,
+    "vetted": True,
     "published": True,
     "graph_type": "bar",
 }
@@ -86,9 +146,9 @@ crime_comment = {
     "vetted": True,
     # "dates": ["2024-01-01", "2023-12-1", "2023-10-1"],
     "dates": ["2023-11-01"],
-    "section": "serious_crime",
+    "section": "systemwide_crime",
     "published": True,
-    "crime_category": "persons",
+    "crime_category": "all",
 }
 arrest_pie = {
     "line_name": "A Line (Blue)",
@@ -221,10 +281,24 @@ async def run_multiple_get(url_list):
     await asyncio.gather(*tasks, return_exceptions=True)
 
 
+async def run_multiple_post(url_data_list):
+    tasks = []
+    for url, json_data in url_data_list:
+        tasks.append(test_async_api("POST", url=url, data=json_data))
+    await asyncio.gather(*tasks, return_exceptions=True)
+
+
 if __name__ == "__main__":
 
     post_url = routes["crime_data_agency"][0]
     asyncio.run(main(post_url=post_url, json_data=crime_agency_bar))
 
-    # asyncio.run(main(get_url=routes["crime_date"][1]))
+    # asyncio.run(main(get_url=routes["routes"][1]))
     # asyncio.run(run_multiple_get(routes["crime_date"]))
+    
+    # url_data_list = []
+    # for x in crime_bar:
+        # url_data_list.append((routes["crime_data"][0], x))
+
+    # asyncio.run(run_multiple_post(url_data_list))
+
