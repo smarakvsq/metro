@@ -106,7 +106,7 @@ crime_bar = [
         "vetted": True,
         "published": True,
         "graph_type": "bar",
-    }
+    },
 ]
 crime_line = {
     "line_name": "K Line",
@@ -296,10 +296,9 @@ if __name__ == "__main__":
 
     asyncio.run(main(get_url=routes["routes"][1]))
     # asyncio.run(run_multiple_get(routes["crime_date"]))
-    
+
     # url_data_list = []
     # for x in crime_bar:
-        # url_data_list.append((routes["crime_data"][0], x))
+    # url_data_list.append((routes["crime_data"][0], x))
 
     # asyncio.run(run_multiple_post(url_data_list))
-

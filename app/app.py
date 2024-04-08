@@ -1,16 +1,12 @@
-from flask import Flask
 import os
 
-from app.api import (
-    arrest_blueprint,
-    cfs_blueprint,
-    crime_blueprint,
-    dashboard_blueprint,
-    route_blueprint,
-)
-from app.middleware import cors, log_request_response, handle_errors
+from flask import Flask
+
+from app.api import (arrest_blueprint, cfs_blueprint, crime_blueprint,
+                     dashboard_blueprint, route_blueprint)
 from app.constants import FilePath
 from app.metro_logging import app_logger as logger
+from app.middleware import cors, handle_errors, log_request_response
 
 
 def create_app(testing=False):
@@ -20,7 +16,7 @@ def create_app(testing=False):
 
     create_dirs()
     app = register_middlewares(app)
-    
+
     register_blueprints(app)
 
     return app

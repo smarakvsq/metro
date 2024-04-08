@@ -1,13 +1,9 @@
 from flask import Blueprint, jsonify, request
 
-from app.api.arrest.arrest_utils import (
-    get_arrest_agency_wide_bar,
-    get_arrest_agency_wide_line,
-    get_arrest_comment,
-    get_arrest_line,
-    get_arrest_pie,
-    get_year_months,
-)
+from app.api.arrest.arrest_utils import (get_arrest_agency_wide_bar,
+                                         get_arrest_agency_wide_line,
+                                         get_arrest_comment, get_arrest_line,
+                                         get_arrest_pie, get_year_months)
 from app.util import parse_date, validate_and_get_args
 
 arrest_blueprint = Blueprint("arrest", __name__)

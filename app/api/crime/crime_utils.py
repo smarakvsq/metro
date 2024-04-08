@@ -1,12 +1,17 @@
 from sqlalchemy import func, select
 
-from app.constants import Ucr, PageType, CrimeSeverity
+from app.constants import CrimeSeverity, PageType, Ucr
 from app.db import get_session
 from app.models.admin_review import AdminReview
 from app.util import format_line_data, select_crime_table
 
 
-async def get_unique_ucr(line_name: str, vetted: bool, transport_type: str, severity: str=CrimeSeverity.SYSTEM_WIDE_CRIME):
+async def get_unique_ucr(
+    line_name: str,
+    vetted: bool,
+    transport_type: str,
+    severity: str = CrimeSeverity.SYSTEM_WIDE_CRIME,
+):
     data = []
     Table = await select_crime_table(vetted)
     filters = [Table.transport_type == transport_type]
@@ -250,6 +255,7 @@ async def get_crime_comment(
         print(exc)
 
     return comment or ""
+
 
 async def get_year_months(vetted: bool, published: bool, transport_type: str):
     data = []

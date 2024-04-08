@@ -1,9 +1,10 @@
 import logging
 import logging.config
-import sys
 import os.path as op
-from app.constants import FilePath
+import sys
+
 from app.config import Settings
+from app.constants import FilePath
 
 settings = Settings()
 # Configure logging using the configuration file
@@ -27,5 +28,3 @@ task_logger.handlers = [stream_handler, task_file_handler]
 
 app_logger.setLevel(settings.log_level)
 task_logger.setLevel(settings.log_level)
-
-
