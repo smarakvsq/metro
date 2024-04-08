@@ -22,6 +22,7 @@ class Dev(Base):
     db_pass: str = Field(..., env="DB_PASS")
     db_host: str = Field(..., env="DB_HOST")
     db_name: str = Field(..., env="DB_NAME")
+    log_level: str = Field(..., env="LOG_LEVEL")
 
     class Config:
         env_file = "./dev.env"
@@ -33,6 +34,7 @@ class Test(Base):
     db_pass: str = Field(..., env="DB_PASS")
     db_host: str = Field(..., env="DB_HOST")
     db_name: str = Field(..., env="DB_NAME")
+    log_level: str = Field(..., env="LOG_LEVEL")
 
     class Config:
         env_file = "./test.env"
@@ -44,6 +46,7 @@ class Client(Base):
     db_pass: str = Field(..., env="DB_PASS")
     db_host: str = Field(..., env="DB_HOST")
     db_name: str = Field(..., env="DB_NAME")
+    log_level: str = Field(..., env="LOG_LEVEL")
 
     class Config:
         env_file = "./client.env"

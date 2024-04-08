@@ -1,5 +1,5 @@
 from flask import Flask
-from flask_migrate import Migrate
+import os
 
 from app.api import (
     arrest_blueprint,
@@ -8,18 +8,20 @@ from app.api import (
     dashboard_blueprint,
     route_blueprint,
 )
-from app.middleware import cors
+from app.middleware import cors, log_request_response, handle_errors
+from app.constants import FilePath
+from app.metro_logging import app_logger as logger
 
 
 def create_app(testing=False):
     """Application factory, used to create application"""
     app = Flask("metro_app")
-    cors(app)
     app.json.sort_keys = False
-    # app.config.from_object("app.config")
 
+    create_dirs()
+    app = register_middlewares(app)
+    
     register_blueprints(app)
-    # app_setup(app)
 
     return app
 
@@ -33,6 +35,14 @@ def register_blueprints(app):
     app.register_blueprint(cfs_blueprint)
 
 
-# def app_setup(app):
-# migrate = Migrate()
-# migrate.init_app(app, engine)
+def create_dirs():
+    dir_paths = [FilePath.APP_LOG_PATH, FilePath.TASK_LOG_PATH]
+    for dir_path in dir_paths:
+        os.makedirs(dir_path, exist_ok=True)
+
+
+def register_middlewares(app):
+    app = log_request_response(app)
+    app = handle_errors(app)
+    cors(app)
+    return app

@@ -225,8 +225,9 @@ cfs_agency_line = {
     "graph_type": "line",
 }
 cfs_comment = {
-    "line_name": "A Line (Blue)",
-    "transport_type": "rail",
+    "line_name": None,
+    # "line_name": "A Line (Blue)",
+    "transport_type": "systemwide",
     # "dates": ["2024-01-01", "2023-12-1", "2023-10-1"],
     "dates": ["2023-11-01"],
     "section": "calls_classification",
@@ -290,10 +291,10 @@ async def run_multiple_post(url_data_list):
 
 if __name__ == "__main__":
 
-    post_url = routes["crime_data_agency"][0]
-    asyncio.run(main(post_url=post_url, json_data=crime_agency_bar))
+    post_url = routes["cfs_comment"][0]
+    # asyncio.run(main(post_url=post_url, json_data=cfs_comment))
 
-    # asyncio.run(main(get_url=routes["routes"][1]))
+    asyncio.run(main(get_url=routes["routes"][1]))
     # asyncio.run(run_multiple_get(routes["crime_date"]))
     
     # url_data_list = []

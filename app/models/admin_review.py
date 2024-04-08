@@ -114,7 +114,6 @@ class AdminReview(Base):
             else:
                 filters.append(AdminReview.sub_section_heading == "all")
 
-        print(filters)
         async with get_session() as sess:
             comments = (await sess.scalars(select(AdminReview.comments).where(*filters))).first()
 

@@ -1,7 +1,9 @@
-from datetime import timedelta
+from datetime import datetime
 from functools import wraps
+from werkzeug.exceptions import HTTPException
 
-from flask import Flask, make_response, request
+from flask import make_response, request, g, jsonify
+from app.metro_logging import app_logger as logger
 
 
 def cors(app):
@@ -31,3 +33,45 @@ def cors(app):
         response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization"
         response.headers["Access-Control-Max-Age"] = "3600"
         return response
+
+
+def log_request_response(app):
+    @app.before_request
+    def log_request():
+        g.start_time = datetime.now()
+        logger.info(f"Request: {request.method} {request.path}")
+        if request.content_type == "application/json":
+            logger.info(f"Request Body: {request.get_json()}")
+
+    @app.after_request
+    def log_response(response):
+        end_time = datetime.now()
+        logger.info(f"Response Status: {response.status_code} | Request Duration: {end_time - g.start_time} seconds")
+        return response
+
+    return app
+
+
+def handle_errors(app):
+    @app.errorhandler(Exception)
+    def handle_all_exceptions(error):
+        # Handle HTTP exceptions
+        if isinstance(error, HTTPException):
+            response = jsonify({
+                'error': error.name,
+                'message': error.description
+            })
+            response.status_code = error.code
+            logger.error(f"HTTP Exception: {error.name} - {error.description}")
+            return response
+
+        # Handle other exceptions
+        logger.error(f"Unexpected Error: {str(error)}")
+        response = jsonify({
+            'error': 'Internal Server Error',
+            'message': 'An unexpected error occurred.'
+        })
+        response.status_code = 500
+        return response
+
+    return app

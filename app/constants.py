@@ -1,3 +1,6 @@
+import os.path as op
+
+
 class TransportType:
     RAIL = "rail"
     BUS = "bus"
@@ -40,3 +43,8 @@ class CrimeSeverity:
 
 class Ucr:
     PERSONS = "persons"
+
+
+class FilePath:
+    APP_LOG_PATH = op.join(op.dirname(op.dirname(__file__)), "logs", "app")
+    TASK_LOG_PATH = op.join(op.dirname(op.dirname(__file__)), "logs", "task")
