@@ -8,3 +8,5 @@ from app.models.landing_page import (ArrestLanding, CallsForServiceLanding,
                                      CrimeLanding)
 from app.models.location import Location
 from app.models.ridership import RidersSummary
+from app.models.user import User
+

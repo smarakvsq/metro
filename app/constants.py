@@ -18,12 +18,6 @@ class Vet:
     UNVETTED = False
 
 
-class CrimeSectionHeading:
-    SERIOUS_CRIME = "serious_crime"
-    systemwide_crime = "systemwide_crime"
-    AGENCY_WIDE = "agency_wide"
-
-
 class GraphType:
     BAR = "bar"
     LINE = "line"

@@ -1,22 +1,20 @@
 import os
 
 from flask import Flask
-
 from app.api import (arrest_blueprint, cfs_blueprint, crime_blueprint,
-                     dashboard_blueprint, route_blueprint)
+                     dashboard_blueprint, route_blueprint, auth_blueprint)
 from app.constants import FilePath
-from app.metro_logging import app_logger as logger
 from app.middleware import cors, handle_errors, log_request_response
+from app.auth import login_manager
 
 
 def create_app(testing=False):
     """Application factory, used to create application"""
     app = Flask("metro_app")
     app.json.sort_keys = False
-
     create_dirs()
     app = register_middlewares(app)
-
+    login_manager.init_app(app)
     register_blueprints(app)
 
     return app
@@ -24,6 +22,7 @@ def create_app(testing=False):
 
 def register_blueprints(app):
     """register all blueprints for application"""
+    app.register_blueprint(auth_blueprint)
     app.register_blueprint(dashboard_blueprint)
     app.register_blueprint(route_blueprint)
     app.register_blueprint(crime_blueprint)
