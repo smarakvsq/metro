@@ -151,9 +151,9 @@ crime_comment = {
     "crime_category": "all",
 }
 arrest_pie = {
-    "line_name": "A Line (Blue)",
-    "transport_type": "rail",
-    "gender": "female",
+    # "line_name": "A Line (Blue)",
+    # "transport_type": "rail",
+    "gender": "male",
     "published": True,
     # "dates": ["2024-01-01", "2023-12-1", "2023-10-1"],
     "dates": ["2024-01-01"],
@@ -171,7 +171,6 @@ arrest_line = {
 arrest_agency_bar = {
     "line_name": "A Line (Blue)",
     "transport_type": "rail",
-    "gender": "female",
     "published": True,
     # "dates": ["2024-01-01", "2023-12-1", "2023-10-1"],
     "dates": ["2024-01-01"],
@@ -180,7 +179,6 @@ arrest_agency_bar = {
 arrest_agency_line = {
     "line_name": "A Line (Blue)",
     "transport_type": "rail",
-    "gender": "female",
     "published": True,
     "dates": ["2024-01-01", "2023-12-1", "2023-10-1"],
     # "dates": ["2024-01-01"],
@@ -291,8 +289,8 @@ async def run_multiple_post(url_data_list):
 
 if __name__ == "__main__":
 
-    post_url = routes["cfs_comment"][0]
-    # asyncio.run(main(post_url=post_url, json_data=cfs_comment))
+    post_url = routes["arrest_data"][0]
+    asyncio.run(main(post_url=post_url, json_data=arrest_pie))
 
     asyncio.run(main(get_url=routes["routes"][1]))
     # asyncio.run(run_multiple_get(routes["crime_date"]))
