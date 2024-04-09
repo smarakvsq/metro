@@ -94,11 +94,10 @@ async def get_arrest_line(json_data):
 async def get_arrest_agency_wide_bar(json_data):
     line_name = json_data.get("line_name")
     transport_type = json_data.get("transport_type")
-    gender = json_data.get("gender")
     dates = json_data.get("dates")
     published = json_data.get("published")
 
-    filters = [Arrest.published == published, Arrest.gender == gender]
+    filters = [Arrest.published == published]
 
     if line_name:
         filters.append(Arrest.line_name == line_name)
@@ -134,11 +133,10 @@ async def get_arrest_agency_wide_bar(json_data):
 async def get_arrest_agency_wide_line(json_data):
     line_name = json_data.get("line_name")
     transport_type = json_data.get("transport_type")
-    gender = json_data.get("gender")
     dates = json_data.get("dates")
     published = json_data.get("published")
 
-    filters = [Arrest.published == published, Arrest.gender == gender]
+    filters = [Arrest.published == published]
 
     if line_name:
         filters.append(Arrest.line_name == line_name)
