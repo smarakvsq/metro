@@ -14,7 +14,11 @@ async def get_unique_ucr(
 ):
     data = []
     Table = await select_crime_table(vetted)
-    filters = [Table.transport_type == transport_type]
+    filters = []
+
+
+    if transport_type:
+        filters.append(Table.transport_type == transport_type)
 
     if line_name:
         filters.append(Table.line_name == line_name)
