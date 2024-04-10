@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify, session
 from werkzeug.security import generate_password_hash, check_password_hash
-from werkzeug.exceptions import Forbidden, Unauthorized, NotFound, Conflict
+from werkzeug.exceptions import Unauthorized, NotFound, Conflict
 
 from app.models.user import User
 from app.metro_logging import app_logger as logger

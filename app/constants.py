@@ -42,3 +42,7 @@ class Ucr:
 class FilePath:
     APP_LOG_PATH = op.join(op.dirname(op.dirname(__file__)), "logs", "app")
     TASK_LOG_PATH = op.join(op.dirname(op.dirname(__file__)), "logs", "task")
+
+
+class Auth:
+    SECRET_KEY = b'pKFBkgvH7eonpbf2iIdorgt6D56Ys44aU8WT-HFDivQ='
