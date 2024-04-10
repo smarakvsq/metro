@@ -9,7 +9,11 @@ from app.util import format_line_data, select_crime_table
 async def get_unique_ucr(line_name: str, vetted: bool, transport_type: str, severity: str=CrimeSeverity.SYSTEM_WIDE_CRIME):
     data = []
     Table = await select_crime_table(vetted)
-    filters = [Table.transport_type == transport_type]
+    filters = []
+
+
+    if transport_type:
+        filters.append(Table.transport_type == transport_type)
 
     if line_name:
         filters.append(Table.line_name == line_name)

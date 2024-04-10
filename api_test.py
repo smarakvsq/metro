@@ -9,6 +9,7 @@ routes = {
         f"{host_url}/crime?transport_type=rail&line_name=A%20Line%20(Blue)&vetted=true&severity=violent_crime",
         f"{host_url}/crime?transport_type=rail&line_name=A%20Line%20(Blue)&vetted=true&severity=systemwide_crime",
         f"{host_url}/crime?transport_type=rail&line_name=A%20Line%20(Blue)&vetted=true",
+        f"{host_url}/crime?severity=violent_crime&vetted=false",
     ],
     "crime_data": [f"{host_url}/crime/data"],
     "crime_date": [
@@ -289,9 +290,9 @@ async def run_multiple_post(url_data_list):
 if __name__ == "__main__":
 
     post_url = routes["arrest_data"][0]
-    asyncio.run(main(post_url=post_url, json_data=arrest_pie))
+    # asyncio.run(main(post_url=post_url, json_data=arrest_pie))
 
-    # asyncio.run(main(get_url=routes["routes"][1]))
+    asyncio.run(main(get_url=routes["crime_ucr"][3]))
     # asyncio.run(run_multiple_get(routes["crime_date"]))
     
     # url_data_list = []
