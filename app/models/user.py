@@ -1,25 +1,29 @@
 from sqlalchemy import Boolean, Column, Date, Integer, String, select
 from datetime import datetime
-
+from uuid import uuid4
 from app.db import Base, get_session
 from app.metro_logging import app_logger as logger
+
+
+def get_uuid():
+    return uuid4().hex
 
 
 class User(Base):
     __tablename__ = "user"
     __table_args__ = {"schema": "ssle_metro"}
 
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    username = Column(String, unique=True)
-    email = Column(String)
-    password_hash = Column(String)
-    is_active = Column(Boolean)
+    id = Column(Integer, primary_key=True, default=get_uuid())
+    username = Column(String, unique=True, nullable=False)
+    email = Column(String, nullable=False)
+    password_hash = Column(String, nullable=False)
+    is_active = Column(Boolean, default=True)
     created_at = Column(Date, default=datetime.utcnow())
     updated_at = Column(Date)
 
     @classmethod
     async def create(cls, username, email, password_hash):
-        user: User = cls(username=username, email=email, password_hash=password_hash, is_active=True)
+        user: User = cls(username=username, email=email, password_hash=password_hash)
         logger.debug(f"Creating user: {username}.")
         async with get_session() as s:
             s.add(user)

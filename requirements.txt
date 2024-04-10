@@ -15,4 +15,4 @@ flask-cors
 black
 asgiref
 pydantic-settings
-flask_login
+cryptography

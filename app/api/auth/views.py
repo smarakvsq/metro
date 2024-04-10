@@ -1,7 +1,6 @@
-from flask import Blueprint, request, jsonify
-from flask_login import login_user, logout_user, login_required, current_user
+from flask import Blueprint, request, jsonify, session
 from werkzeug.security import generate_password_hash, check_password_hash
-from werkzeug.exceptions import Forbidden, Unauthorized, NotFound
+from werkzeug.exceptions import Forbidden, Unauthorized, NotFound, Conflict
 
 from app.models.user import User
 from app.metro_logging import app_logger as logger
@@ -19,10 +18,12 @@ async def register():
     print("here")
     # Check if the user already exists
     existing_user: User = await User.get_by_username(username)
-    print(existing_user)
+    
+    logger.debug(existing_user)
+    
     if existing_user:
         logger.debug(f"User exists. User created at {existing_user.created_at}")
-        raise Forbidden(f'Username {username} already exists')
+        raise Conflict(f'Username {username} already exists')
 
     # Create a new user
     password_hash = generate_password_hash(password)
@@ -31,28 +32,25 @@ async def register():
     logger.info(f"New user {username} created.")
     
     # Log the user in
-    await login_user(new_user)
-    logger.info(f"Login new user {username}.")
-    return jsonify({'message': 'User registered and logged in'})
+    return jsonify({'Message': 'User registered'})
 
 
 @auth_blueprint.route('/auth/login', methods=['POST'])
 async def login():
-    data = await request.get_json()
+    data = request.json
     username = data.get('username')
     password = data.get('password')
     user = await User.get_by_username(username)
     if user and check_password_hash(user.password_hash, password):
-        login_user(user)
+        session.user_id = ""
         return jsonify({'message': 'Login Successful.'})
     
     raise Unauthorized('Invalid credentials')
 
 
 @auth_blueprint.route('/auth/logout')
-@login_required
 async def logout():
-    logout_user()
+    "logout_user()"
     return jsonify({'message': 'Logout Successful'})
 
 
