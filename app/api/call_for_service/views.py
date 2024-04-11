@@ -2,12 +2,9 @@ from flask import Blueprint, jsonify, request
 
 from app.api.call_for_service.cfs_utils import (
     get_call_for_service_agency_wide_bar,
-    get_call_for_service_agency_wide_line,
-    get_call_for_service_bar,
-    get_call_for_service_comment,
-    get_call_for_service_line,
-    get_year_months,
-)
+    get_call_for_service_agency_wide_line, get_call_for_service_bar,
+    get_call_for_service_comment, get_call_for_service_line, get_year_months)
+from app.metro_logging import app_logger as logger
 from app.util import parse_date, validate_and_get_args
 
 cfs_blueprint = Blueprint("call_for_service", __name__)
@@ -15,7 +12,6 @@ cfs_blueprint = Blueprint("call_for_service", __name__)
 
 @cfs_blueprint.route("/call_for_service/data", methods=["POST"])
 async def call_for_service_data():
-    print("request body", request.json)
     call_for_service_data = []
     body = request.json
     graph_mapper = {"bar": get_call_for_service_bar, "line": get_call_for_service_line}
@@ -31,7 +27,6 @@ async def call_for_service_data():
 
 @cfs_blueprint.route("/call_for_service/data/agency", methods=["POST"])
 async def call_for_service_data_agency():
-    print("request body", request.json)
     call_for_service_data = []
     body = request.json
     graph_mapper = {
@@ -50,13 +45,15 @@ async def call_for_service_data_agency():
 
 @cfs_blueprint.route("/call_for_service/comment", methods=["POST"])
 async def get_section_comments():
-    print("request body", request.json)
+    # logger.debug(f"request body {request.json}")
     body = request.json
 
     if not body.get("dates") and not isinstance(body.get("dates"), list):
+        logger.info("Check for dates field and verify the type is list")
         return jsonify({"Error": "dates field should be a list."}), 400
 
     if len(body.get("dates")) != 1:
+        logger.info("Received multiple date values. Skipping comment fetch.")
         return (
             jsonify(
                 {
@@ -67,7 +64,7 @@ async def get_section_comments():
             200,
         )
     year_month = await parse_date(body.get("dates")[0])
-
+    logger.debug(f"Parse date received to datetime. {year_month}")
     comment = ""
     try:
         comment = await get_call_for_service_comment(
@@ -78,9 +75,10 @@ async def get_section_comments():
             published=body.get("published"),
         )
     except Exception as exc:
-        print(exc)
+        logger.error(f"Error while fetching comments for calls for service. {exc}")
         return jsonify({"Error": str(exc)}), 400
 
+    logger.debug(f"Fetched comment: {comment}")
     return jsonify({"comment": comment}), 200
 
 

@@ -2,6 +2,7 @@ from sqlalchemy import Boolean, Column, Date, Integer, String, select
 
 from app.constants import PageType, TransportType
 from app.db import Base, get_session
+from app.metro_logging import app_logger as logger
 
 
 class AdminReview(Base):
@@ -96,7 +97,7 @@ class AdminReview(Base):
         if page_type:
             filters.append(AdminReview.page_type == page_type)
         else:
-            print("Page type not found")
+            logger.debug("Page type not found")
 
         if line_name:
             filters.append(AdminReview.line_name == line_name)
@@ -114,7 +115,6 @@ class AdminReview(Base):
             else:
                 filters.append(AdminReview.sub_section_heading == "all")
 
-        print(filters)
         async with get_session() as sess:
             comments = (await sess.scalars(select(AdminReview.comments).where(*filters))).first()
 

@@ -1,13 +1,9 @@
 from flask import Blueprint, jsonify, request
 
-from app.api.arrest.arrest_utils import (
-    get_arrest_agency_wide_bar,
-    get_arrest_agency_wide_line,
-    get_arrest_comment,
-    get_arrest_line,
-    get_arrest_pie,
-    get_year_months,
-)
+from app.api.arrest.arrest_utils import (get_arrest_agency_wide_bar,
+                                         get_arrest_agency_wide_line,
+                                         get_arrest_comment, get_arrest_line,
+                                         get_arrest_pie, get_year_months)
 from app.util import parse_date, validate_and_get_args
 
 arrest_blueprint = Blueprint("arrest", __name__)
@@ -15,7 +11,6 @@ arrest_blueprint = Blueprint("arrest", __name__)
 
 @arrest_blueprint.route("/arrest/data", methods=["POST"])
 async def arrest_data():
-    print("request body", request.json)
     arrest_data = []
     body = request.json
     graph_mapper = {"pie": get_arrest_pie, "line": get_arrest_line}
@@ -31,7 +26,6 @@ async def arrest_data():
 
 @arrest_blueprint.route("/arrest/data/agency", methods=["POST"])
 async def arrest_data_agency():
-    print("request body", request.json)
     arrest_data = []
     body = request.json
     graph_mapper = {"bar": get_arrest_agency_wide_bar, "line": get_arrest_agency_wide_line}
@@ -47,7 +41,6 @@ async def arrest_data_agency():
 
 @arrest_blueprint.route("/arrest/comment", methods=["POST"])
 async def get_section_comments():
-    print("request body", request.json)
     body = request.json
     if not body.get("dates") and not isinstance(body.get("dates"), list):
         return jsonify({"Error": "dates field should be a list."}), 400

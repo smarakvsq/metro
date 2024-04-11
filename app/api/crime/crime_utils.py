@@ -1,16 +1,21 @@
 from sqlalchemy import func, select
 
-from app.constants import Ucr, PageType, CrimeSeverity
+from app.constants import CrimeSeverity, PageType, Ucr
 from app.db import get_session
 from app.models.admin_review import AdminReview
 from app.util import format_line_data, select_crime_table
+from app.metro_logging import app_logger as logger
 
 
-async def get_unique_ucr(line_name: str, vetted: bool, transport_type: str, severity: str=CrimeSeverity.SYSTEM_WIDE_CRIME):
+async def get_unique_ucr(
+    line_name: str,
+    vetted: bool,
+    transport_type: str,
+    severity: str = CrimeSeverity.SYSTEM_WIDE_CRIME,
+):
     data = []
     Table = await select_crime_table(vetted)
     filters = []
-
 
     if transport_type:
         filters.append(Table.transport_type == transport_type)
@@ -68,7 +73,6 @@ async def get_crime_data_bar(json_data):
         )
         data = (await sess.execute(query)).all()
         json_data = {crime_name: count for crime_name, count in data if count != 0}
-        print(json_data)
         json_data = dict(sorted(json_data.items(), key=lambda x: x[1], reverse=True))
 
     crime_data = {}
@@ -251,9 +255,10 @@ async def get_crime_comment(
             published=published,
         )
     except Exception as exc:
-        print(exc)
+        logger.exception(exc)
 
     return comment or ""
+
 
 async def get_year_months(vetted: bool, published: bool, transport_type: str):
     data = []
