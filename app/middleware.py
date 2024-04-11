@@ -1,3 +1,5 @@
+import sys
+import traceback
 from datetime import datetime
 from functools import wraps
 
@@ -66,7 +68,9 @@ def handle_errors(app):
             return response
 
         # Handle other exceptions
-        logger.error(f"Unexpected Error: {str(error)}")
+        logger.error(f"Unexpected Error: {str(error.__class__)} | {str(error)}")
+        logger.exception(traceback.format_exc())
+
         response = jsonify(
             {"error": "Internal Server Error", "message": "An unexpected error occurred."}
         )

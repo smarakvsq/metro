@@ -45,4 +45,4 @@ class FilePath:
 
 
 class Auth:
-    SECRET_KEY = b'pKFBkgvH7eonpbf2iIdorgt6D56Ys44aU8WT-HFDivQ='
+    SECRET_KEY = b"pKFBkgvH7eonpbf2iIdorgt6D56Ys44aU8WT-HFDivQ="

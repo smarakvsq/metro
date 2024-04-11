@@ -1,6 +1,8 @@
-from sqlalchemy import Boolean, Column, Date, Integer, String, select
 from datetime import datetime
 from uuid import uuid4
+
+from sqlalchemy import Boolean, Column, Date, Integer, String, select
+
 from app.db import Base, get_session
 from app.metro_logging import app_logger as logger
 
@@ -13,13 +15,14 @@ class User(Base):
     __tablename__ = "user"
     __table_args__ = {"schema": "ssle_metro"}
 
-    id = Column(Integer, primary_key=True, default=get_uuid())
+    id = Column(String, primary_key=True, default=get_uuid())
     username = Column(String, unique=True, nullable=False)
     email = Column(String, nullable=False)
     password_hash = Column(String, nullable=False)
     is_active = Column(Boolean, default=True)
     created_at = Column(Date, default=datetime.utcnow())
     updated_at = Column(Date)
+    is_auth = Column(Boolean, nullable=False, default=False)
 
     @classmethod
     async def create(cls, username, email, password_hash):
@@ -34,7 +37,7 @@ class User(Base):
                 await s.rollback()
                 return None
         return user
-    
+
     @classmethod
     async def get_by_id(cls, user_id):
         logger.debug(f"Fetching user with id: {user_id}")
@@ -70,4 +73,3 @@ class User(Base):
         async with get_session() as s:
             await s.delete(self)
             await s.commit()
-
