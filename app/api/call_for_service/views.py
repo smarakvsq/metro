@@ -12,7 +12,6 @@ cfs_blueprint = Blueprint("call_for_service", __name__)
 
 @cfs_blueprint.route("/call_for_service/data", methods=["POST"])
 async def call_for_service_data():
-    print("request body", request.json)
     call_for_service_data = []
     body = request.json
     graph_mapper = {"bar": get_call_for_service_bar, "line": get_call_for_service_line}
@@ -28,7 +27,6 @@ async def call_for_service_data():
 
 @cfs_blueprint.route("/call_for_service/data/agency", methods=["POST"])
 async def call_for_service_data_agency():
-    print("request body", request.json)
     call_for_service_data = []
     body = request.json
     graph_mapper = {

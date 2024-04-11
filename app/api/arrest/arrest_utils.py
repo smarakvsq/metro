@@ -5,6 +5,7 @@ from app.db import get_session
 from app.models.admin_review import AdminReview
 from app.models.arrest import Arrest
 from app.util import format_line_data
+from app.metro_logging import app_logger as logger
 
 
 async def get_arrest_pie(json_data):
@@ -188,7 +189,7 @@ async def get_arrest_comment(
             published=published,
         )
     except Exception as exc:
-        print(exc)
+        logger.exception(exc)
 
     return comment or ""
 

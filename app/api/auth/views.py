@@ -16,7 +16,6 @@ async def register():
     username = data.get("username")
     email = data.get("email")
     password = data.get("password")
-    print("here")
     # Check if the user already exists
     existing_user: User = await User.get_by_username(username)
 

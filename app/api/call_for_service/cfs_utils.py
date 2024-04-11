@@ -5,6 +5,7 @@ from app.db import get_session
 from app.models.admin_review import AdminReview
 from app.models.call_for_service import CallForService
 from app.util import format_line_data
+from app.metro_logging import app_logger as logger
 
 
 async def get_call_for_service_bar(json_data):
@@ -193,7 +194,7 @@ async def get_call_for_service_comment(
             published=published,
         )
     except Exception as exc:
-        print(exc)
+        logger.exception(exc)
 
     return comment or ""
 

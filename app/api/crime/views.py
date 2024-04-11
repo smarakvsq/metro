@@ -7,6 +7,7 @@ from app.api.crime.crime_utils import (get_crime_comment,
                                        get_unique_ucr, get_year_months)
 from app.constants import CrimeSeverity
 from app.util import parse_date, validate_and_get_args
+from app.metro_logging import app_logger as logger
 
 crime_blueprint = Blueprint("crime", __name__)
 
@@ -14,7 +15,6 @@ crime_blueprint = Blueprint("crime", __name__)
 @crime_blueprint.route("/crime")
 @validate_and_get_args(line_name=False, transport_type=False, vetted=True, severity=False)
 async def get_crime_category(body):
-    print("request body", body)
     data = await get_unique_ucr(
         line_name=body.get("line_name"),
         transport_type=body.get("transport_type"),
@@ -26,7 +26,6 @@ async def get_crime_category(body):
 
 @crime_blueprint.route("/crime/data", methods=["POST"])
 async def crime_data():
-    print("request body", request.json)
     body = request.json
     crime_data = {}
     graph_mapper = {
@@ -57,7 +56,6 @@ async def crime_data():
 
 @crime_blueprint.route("/crime/data/agency", methods=["POST"])
 async def crime_data_agency():
-    print("request body", request.json)
     body = request.json
     crime_data = {}
     graph_mapper = {
@@ -76,7 +74,6 @@ async def crime_data_agency():
 
 @crime_blueprint.route("/crime/comment", methods=["POST"])
 async def get_section_comments():
-    print("request body", request.json)
     body = request.json
 
     if not body.get("dates") and not isinstance(body.get("dates"), list):
@@ -103,7 +100,7 @@ async def get_section_comments():
             published=body.get("published"),
         )
     except Exception as exc:
-        print(exc)
+        logger.exception(exc)
         return jsonify({"Error": str(exc)}), 400
 
     return jsonify({"comment": comment}), 200
