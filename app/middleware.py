@@ -43,7 +43,7 @@ def log_request_response(app):
     def log_request():
         g.start_time = datetime.now()
         logger.info(f"Request: {request.method} {request.path}")
-        if request.content_type == "application/json":
+        if request.method != "GET" and request.content_type == "application/json":
             logger.info(f"Request Body: {request.get_json()}")
 
     @app.after_request
