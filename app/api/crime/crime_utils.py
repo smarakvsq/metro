@@ -2,9 +2,9 @@ from sqlalchemy import func, select
 
 from app.constants import CrimeSeverity, PageType, Ucr
 from app.db import get_session
+from app.metro_logging import app_logger as logger
 from app.models.admin_review import AdminReview
 from app.util import format_line_data, select_crime_table
-from app.metro_logging import app_logger as logger
 
 
 async def get_unique_ucr(

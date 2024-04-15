@@ -28,6 +28,12 @@ routes = {
     ],
     "crime_data_agency": [f"{host_url}/crime/data/agency"],
     "crime_comment": [f"{host_url}/crime/comment"],
+    "crime_unvetted_date": [
+        f"{host_url}/crime/unvetted/date?published=true",
+        f"{host_url}/crime/unvetted/date?published=true&transport_type=rail",
+    ],
+    "crime_unvetted_data": [f"{host_url}/crime/unvetted/data"],
+    "crime_unvetted_data_agency": [f"{host_url}/crime/unvetted/data/agency"],
     "routes": [
         f"{host_url}/routes/?stat_type=calls_for_service&transport_type=rail",
         f"{host_url}/routes/?stat_type=arrest&vetted=false&transport_type=rail",
@@ -142,6 +148,66 @@ crime_agency_line = {
     "graph_type": "line",
 }
 crime_comment = {
+    "line_name": "A Line (Blue)",
+    "transport_type": "rail",
+    "vetted": True,
+    # "dates": ["2024-01-01", "2023-12-1", "2023-10-1"],
+    "dates": ["2023-11-01"],
+    "section": "systemwide_crime",
+    "published": True,
+    "crime_category": "all",
+}
+unvetted_bar = [
+    {
+        "line_name": "A Line (Blue)",
+        "dates": [
+            {"2024-01-01": [52]},
+            {"2023-12-1": [48, 49, 50, 51]},
+            {"2023-11-1": [43, 44, 45, 46, 47]},
+        ],
+        "transport_type": "rail",
+        "severity": "systemwide_crime",
+        "crime_category": "persons",
+        "published": True,
+        "graph_type": "bar",
+    },
+]
+unvetted_line = {
+    # "line_name": "K Line",
+    "line_name": "A Line (Blue)",
+    "dates": [{"2024-01-01": [52]}],
+    "transport_type": "rail",
+    "severity": "systemwide_crime",
+    # "severity": "violent_crime",
+    "crime_category": "persons",
+    "published": True,
+    "graph_type": "line",
+}
+unvetted_agency_bar = {
+    "line_name": "A Line (Blue)",
+    "dates": [
+        {"2024-01-01": [52]},
+        {"2023-12-1": [48, 49, 50, 51]},
+        {"2023-11-1": [43, 44, 45, 46, 47]},
+    ],
+    "transport_type": "rail",
+    "crime_category": "persons",
+    "published": True,
+    "graph_type": "bar",
+}
+unvetted_agency_line = {
+    "line_name": "A Line (Blue)",
+    "dates": [
+        {"2024-01-01": [52]},
+        {"2023-12-1": [48, 49, 50, 51]},
+        {"2023-11-1": [43, 44, 45, 46, 47]},
+    ],
+    "transport_type": "rail",
+    "crime_category": "persons",
+    "published": True,
+    "graph_type": "line",
+}
+unvetted_comment = {
     "line_name": "A Line (Blue)",
     "transport_type": "rail",
     "vetted": True,
@@ -290,10 +356,10 @@ async def run_multiple_post(url_data_list):
 
 if __name__ == "__main__":
 
-    post_url = routes["arrest_data"][0]
-    # asyncio.run(main(post_url=post_url, json_data=arrest_pie))
+    post_url = routes["crime_unvetted_data_agency"][0]
+    asyncio.run(main(post_url=post_url, json_data=unvetted_agency_bar))
 
-    asyncio.run(main(get_url=routes["crime_ucr"][3]))
+    # asyncio.run(main(get_url=routes["crime_unvetted_date"][0]))
     # asyncio.run(run_multiple_get(routes["crime_date"]))
 
     # url_data_list = []

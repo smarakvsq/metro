@@ -82,6 +82,7 @@ class AdminReview(Base):
         published: bool,
         vetted: bool = None,
         sub_section_heading: str = None,
+        week_no: int = None,
     ):
         comments = ""
         filters = [
