@@ -180,7 +180,7 @@ async def crime_data_unvetted_agency():
 
 
 @crime_blueprint.route("/crime/unvetted/comment", methods=["POST"])
-async def get_section_comments():
+async def get_unetted_section_comments():
     body = request.json
 
     await get_unvetted_crime_comment(

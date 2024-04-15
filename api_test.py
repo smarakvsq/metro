@@ -356,10 +356,10 @@ async def run_multiple_post(url_data_list):
 
 if __name__ == "__main__":
 
-    post_url = routes["crime_unvetted_data_agency"][0]
-    asyncio.run(main(post_url=post_url, json_data=unvetted_agency_bar))
+    post_url = routes["crime_unvetted_data"][0]
+    # asyncio.run(main(post_url=post_url, json_data=unvetted_line))
 
-    # asyncio.run(main(get_url=routes["crime_unvetted_date"][0]))
+    asyncio.run(main(get_url=routes["crime_unvetted_date"][0]))
     # asyncio.run(run_multiple_get(routes["crime_date"]))
 
     # url_data_list = []
