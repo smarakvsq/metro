@@ -11,3 +11,8 @@ alembic
 uvicorn
 starlette
 aiohttp
+flask-cors
+black
+asgiref
+pydantic-settings
+cryptography
