@@ -7,6 +7,11 @@ from app.metro_logging import app_logger as logger
 from app.models.admin_review import AdminReview
 from app.models.crime_unvet import CrimeUnvetted
 
+from datetime import datetime
+
+
+def json_dt_serializer(obj):
+    return obj.strftime("%Y-%-m-%-d")
 
 async def get_unvetted_date(published, transport_type):
     data = []
@@ -121,7 +126,6 @@ async def get_crime_unvetted_data_line(json_data):
     if weeks:
         filters.append(CrimeUnvetted.week_no.in_(weeks))
 
-    line_data = []
 
     data = []
     async with get_session() as sess:
@@ -144,16 +148,40 @@ async def get_crime_unvetted_data_line(json_data):
         data = (await sess.execute(query)).all()
 
     if data:
-        crime_types = set(item[2] for item in data)
-        for item in data:
-            date, week, _, value = item
-            crime_dict = {"name": str(date), "week": week}
-            for crime_type in crime_types:
-                crime_dict[crime_type] = 0
-            crime_dict[item[2]] = value
-            line_data.append(crime_dict)
+        tmp_dict = {}
+        crime_names = set()
+        counter = 0
+        line_data = []
 
-    return line_data
+        for date_, week_no, crime_name, crime_count in data:
+            counter += crime_count
+            crime_names.add(crime_name)
+            date_ = date_.strftime("%b%y")
+            week_no = str(week_no)
+            if date_ not in tmp_dict:
+                tmp_dict[date_] = {week_no: {crime_name: crime_count}}
+            else:
+                if week_no in tmp_dict[date_]:
+                    tmp_dict[date_][week_no].update({crime_name: crime_count})
+                else:
+                    tmp_dict[date_].update({week_no: {crime_name: crime_count}})
+    
+        if counter != 0:
+            for date_ in tmp_dict:
+                for week_no in tmp_dict[date_]:
+                    for crime in list(crime_names):
+                        if crime not in tmp_dict[date_][week_no]:
+                            tmp_dict[date_][week_no].update({crime: 0})
+
+            for date_ in tmp_dict:
+                tmp_lst = []
+                for week_no in tmp_dict[date_]:
+                    tmp_lst.append({"name": f"{date_}-W{int(week_no)}", **tmp_dict[date_][week_no]})
+                line_data.extend(tmp_lst)
+    
+    crime_data = {}
+    crime_data.update({"crime_unvetted_line_data": line_data})
+    return crime_data
 
 
 async def get_crime_unvetted_data_agency_bar(json_data):

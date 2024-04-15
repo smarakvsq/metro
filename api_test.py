@@ -175,7 +175,12 @@ unvetted_bar = [
 unvetted_line = {
     # "line_name": "K Line",
     "line_name": "A Line (Blue)",
-    "dates": [{"2024-01-01": [52]}],
+    "dates": [
+            {"2024-01-01": [52]},
+            {"2023-12-1": [48, 49, 50, 51]},
+            {"2023-11-1": [43, 44, 45, 46, 47]},
+        ],
+    # "dates": [{"2024-01-01": [52]}],
     "transport_type": "rail",
     "severity": "systemwide_crime",
     # "severity": "violent_crime",
@@ -357,9 +362,9 @@ async def run_multiple_post(url_data_list):
 if __name__ == "__main__":
 
     post_url = routes["crime_unvetted_data"][0]
-    # asyncio.run(main(post_url=post_url, json_data=unvetted_line))
+    asyncio.run(main(post_url=post_url, json_data=unvetted_line))
 
-    asyncio.run(main(get_url=routes["crime_unvetted_date"][0]))
+    # asyncio.run(main(get_url=routes["crime_unvetted_date"][0]))
     # asyncio.run(run_multiple_get(routes["crime_date"]))
 
     # url_data_list = []
