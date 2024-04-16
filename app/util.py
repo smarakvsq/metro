@@ -89,3 +89,18 @@ async def format_line_data(data: dict) -> dict:
                 dct.update({category: formatted_data[date_].get(category, 0)})
             line_data.append(dct)
     return line_data
+
+
+async def get_year_month_week(date_details: list[dict[str, list[int]]]):
+    date_list = []
+    weeks_list = []
+
+    for detail in date_details:
+        for date_, week_list in detail.items():
+            date_list.append(await parse_date(date_))
+            weeks_list.extend(week_list)
+
+    date_list = list(set(date_list))
+    weeks_list = [int(x) for x in list(set(weeks_list))]
+
+    return date_list, weeks_list

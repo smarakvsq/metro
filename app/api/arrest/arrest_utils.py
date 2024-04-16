@@ -2,10 +2,10 @@ from sqlalchemy import func, select
 
 from app.constants import PageType
 from app.db import get_session
+from app.metro_logging import app_logger as logger
 from app.models.admin_review import AdminReview
 from app.models.arrest import Arrest
 from app.util import format_line_data
-from app.metro_logging import app_logger as logger
 
 
 async def get_arrest_pie(json_data):
