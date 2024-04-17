@@ -29,6 +29,7 @@ async def get_unique_ucr(
     async with get_session() as sess:
         data = (await sess.scalars(select(Table.ucr).where(*filters).distinct())).all()
 
+    data = sorted(data)
     return data
 
 
