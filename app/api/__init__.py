@@ -1,4 +1,4 @@
-from .admin.landing_page import lp_admin_blueprint
+from .admin.views import lp_admin_blueprint
 from .arrest.views import arrest_blueprint
 from .auth.views import auth_blueprint
 from .call_for_service.views import cfs_blueprint

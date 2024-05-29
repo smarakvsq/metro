@@ -11,6 +11,7 @@ class PageType:
     CRIME = "crime"
     ARREST = "arrest"
     CALLS_FOR_SERVICE = "calls_for_service"
+    LANDING_PAGE = "landing_page"
 
 
 class Vet:

@@ -1,0 +1,83 @@
+diff --git a/app/api/crime/crime_utils.py b/app/api/crime/crime_utils.py
+index b031e2f..2506671 100644
+--- a/app/api/crime/crime_utils.py
++++ b/app/api/crime/crime_utils.py
+@@ -11,21 +11,35 @@ severity_mapper = {
+ }
+ 
+ 
+-async def get_unique_ucr(line_name: str, vetted: bool, transport_type: str, severity: str):
++async def get_unique_ucr(line_name: str, vetted: bool, transport_type: str):
+     data = []
+     Table = await select_crime_table(vetted)
+     filters = [Table.transport_type == transport_type]
+ 
+-    if severity in severity_mapper.keys():
+-        filters.append(Table.severity == severity_mapper[severity])
++    # if severity in severity_mapper.keys():
++        # filters.append(Table.severity == severity_mapper[severity])
+ 
+     if line_name:
+         filters.append(Table.line_name == line_name)
+ 
+     async with get_session() as sess:
+-        data = (await sess.scalars(select(Table.ucr).where(*filters).distinct())).all()
++        query = select(Table.severity, Table.ucr).where(*filters).group_by(Table.ucr, Table.severity).distinct()
++        data = (await sess.execute(query)).all()
++    
+ 
+-    return data
++    severity_ucr_dict = {}
++    if data:
++        for part, ucr in data:
++            if part in severity_ucr_dict:
++                severity_ucr_dict[part].append(ucr)
++            else:
++                severity_ucr_dict[part] = []
++        
++        for sev, part in severity_mapper.items():
++            severity_ucr_dict[sev] = list(set(severity_ucr_dict.pop(part)))
++
++
++    return severity_ucr_dict
+ 
+ 
+ async def get_crime_data_bar(json_data):
+diff --git a/app/api/crime/views.py b/app/api/crime/views.py
+index 57a0906..140d36e 100644
+--- a/app/api/crime/views.py
++++ b/app/api/crime/views.py
+@@ -15,14 +15,13 @@ crime_blueprint = Blueprint("crime", __name__)
+ 
+ 
+ @crime_blueprint.route("/crime")
+-@validate_and_get_args(line_name=False, transport_type=False, vetted=True, severity=False)
++@validate_and_get_args(line_name=False, transport_type=False, vetted=True)
+ async def get_crime_category(body):
+     print("request body", body)
+     data = await get_unique_ucr(
+         line_name=body.get("line_name"),
+         transport_type=body.get("transport_type"),
+         vetted=body.get("vetted"),
+-        severity=body.get("severity"),
+     )
+     return jsonify(data), 200
+ 
+diff --git a/app/app.py b/app/app.py
+index bbfbaaf..fabd591 100644
+--- a/app/app.py
++++ b/app/app.py
+@@ -1,5 +1,4 @@
+ from flask import Flask
+-from flask_migrate import Migrate
+ 
+ from app.api import (
+     arrest_blueprint,
+@@ -31,7 +30,3 @@ def register_blueprints(app):
+     app.register_blueprint(arrest_blueprint)
+     app.register_blueprint(cfs_blueprint)
+ 
+-
+-# def app_setup(app):
+-# migrate = Migrate()
+-# migrate.init_app(app, engine)

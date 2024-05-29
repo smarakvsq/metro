@@ -7,11 +7,6 @@ from app.metro_logging import app_logger as logger
 from app.models.admin_review import AdminReview
 from app.models.crime_unvet import CrimeUnvetted
 
-from datetime import datetime
-
-
-def json_dt_serializer(obj):
-    return obj.strftime("%Y-%-m-%-d")
 
 async def get_unvetted_date(published, transport_type):
     data = []
@@ -126,7 +121,6 @@ async def get_crime_unvetted_data_line(json_data):
     if weeks:
         filters.append(CrimeUnvetted.week_no.in_(weeks))
 
-
     data = []
     async with get_session() as sess:
         query = (
@@ -165,7 +159,7 @@ async def get_crime_unvetted_data_line(json_data):
                     tmp_dict[date_][week_no].update({crime_name: crime_count})
                 else:
                     tmp_dict[date_].update({week_no: {crime_name: crime_count}})
-    
+
         if counter != 0:
             for date_ in tmp_dict:
                 for week_no in tmp_dict[date_]:
@@ -178,7 +172,7 @@ async def get_crime_unvetted_data_line(json_data):
                 for week_no in tmp_dict[date_]:
                     tmp_lst.append({"name": f"{date_}-W{int(week_no)}", **tmp_dict[date_][week_no]})
                 line_data.extend(tmp_lst)
-    
+
     crime_data = {}
     crime_data.update({"crime_unvetted_line_data": line_data})
     return crime_data

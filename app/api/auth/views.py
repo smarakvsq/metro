@@ -1,6 +1,5 @@
 from flask import Blueprint, jsonify, request, session
-from werkzeug.exceptions import (BadRequest, Conflict, NotFound, Unauthorized,
-                                 UnprocessableEntity)
+from werkzeug.exceptions import BadRequest, Conflict, NotFound, Unauthorized, UnprocessableEntity
 from werkzeug.security import check_password_hash, generate_password_hash
 
 from app.api.auth.auth_utils import decrypt_string, encrypt_string

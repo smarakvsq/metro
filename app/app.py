@@ -2,9 +2,15 @@ import os
 
 from flask import Flask
 
-from app.api import (arrest_blueprint, auth_blueprint, cfs_blueprint,
-                     crime_blueprint, dashboard_blueprint, lp_admin_blueprint,
-                     route_blueprint)
+from app.api import (
+    arrest_blueprint,
+    auth_blueprint,
+    cfs_blueprint,
+    crime_blueprint,
+    dashboard_blueprint,
+    lp_admin_blueprint,
+    route_blueprint,
+)
 from app.constants import FilePath
 from app.middleware import cors, handle_errors, log_request_response
 

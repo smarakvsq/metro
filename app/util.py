@@ -104,3 +104,7 @@ async def get_year_month_week(date_details: list[dict[str, list[int]]]):
     weeks_list = [int(x) for x in list(set(weeks_list))]
 
     return date_list, weeks_list
+
+
+def is_valid_value(cls, value):
+    return value in [x for x in vars(cls).values() if (isinstance(x, str) and not x.startswith("__"))]

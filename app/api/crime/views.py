@@ -1,17 +1,23 @@
 from flask import Blueprint, jsonify, request
 from werkzeug.exceptions import BadRequest, UnprocessableEntity
 
-from app.api.crime.crime_utils import (get_crime_comment,
-                                       get_crime_data_agency_bar,
-                                       get_crime_data_agency_line,
-                                       get_crime_data_bar, get_crime_data_line,
-                                       get_unique_ucr, get_year_months)
-from app.api.crime.unvetted_utils import (get_crime_unvetted_data_agency_bar,
-                                          get_crime_unvetted_data_agency_line,
-                                          get_crime_unvetted_data_bar,
-                                          get_crime_unvetted_data_line,
-                                          get_unvetted_crime_comment,
-                                          get_unvetted_date)
+from app.api.crime.crime_utils import (
+    get_crime_comment,
+    get_crime_data_agency_bar,
+    get_crime_data_agency_line,
+    get_crime_data_bar,
+    get_crime_data_line,
+    get_unique_ucr,
+    get_year_months,
+)
+from app.api.crime.unvetted_utils import (
+    get_crime_unvetted_data_agency_bar,
+    get_crime_unvetted_data_agency_line,
+    get_crime_unvetted_data_bar,
+    get_crime_unvetted_data_line,
+    get_unvetted_crime_comment,
+    get_unvetted_date,
+)
 from app.constants import CrimeSeverity
 from app.metro_logging import app_logger as logger
 from app.util import get_year_month_week, parse_date, validate_and_get_args
@@ -139,8 +145,11 @@ async def crime_data_unvetted():
         "line": get_crime_unvetted_data_line,
     }
 
-    if not body.get("dates") and not isinstance(body.get("dates"), dict):
-        BadRequest("Dates field should be a dictionary of dates and weeks.")
+    if not body.get("dates"):
+        raise BadRequest("Dates unavailable.")
+
+    if not isinstance(body.get("dates"), dict):
+        raise BadRequest("Dates field should be a dictionary of dates and weeks.")
 
     if (
         body.get("severity")
@@ -168,8 +177,11 @@ async def crime_data_unvetted_agency():
         "line": get_crime_unvetted_data_agency_line,
     }
 
-    if not body.get("dates") and not isinstance(body.get("dates"), dict):
-        BadRequest("Dates field should be a dictionary of dates and weeks.")
+    if not body.get("dates"):
+        raise BadRequest("Dates unavailable.")
+
+    if not isinstance(body.get("dates"), dict):
+        raise BadRequest("Dates field should be a dictionary of dates and weeks.")
 
     year_months, weeks = await get_year_month_week(body.pop("dates"))
     body["year_months"] = year_months

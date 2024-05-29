@@ -2,8 +2,7 @@ from sqlalchemy import select
 
 from app.constants import TransportType
 from app.db import get_session
-from app.models import (AdminReview, ArrestLanding, CallsForServiceLanding,
-                        CrimeLanding)
+from app.models import AdminReview, ArrestLanding, CallsForServiceLanding, CrimeLanding
 
 
 async def get_call_for_service_data(transport_type: str, published: bool):
